@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <group>
+
+        <item android:id="@+id/navEnsemble"
+            android:title="@string/navEnsemble" />
+
+    </group>
+
+    <group>
+
+        <item android:id="@+id/navAjouter"
+            android:title="@string/navAjouter" />
+
+        <item android:id="@+id/navEnsembles"
+            android:title="@string/navEnsembles" />
+
+    </group>
+
+    <item android:title="@string/navLister" >
+        <menu>
+
+            <item android:id="@+id/navTous"
+                android:title="@string/navTous" />
+
+            <item android:id="@+id/navSaison"
+                android:title="@string/saison" />
+
+            <item android:id="@+id/navType"
+                android:title="@string/type" />
+
+            <item android:id="@+id/navCouleur"
+                android:title="@string/categorie" />
+
+            <item android:id="@+id/navCategorie"
+                android:title="@string/categorie" />
+
+        </menu>
+    </item>
+
+    <group>
+
+        <item android:id="@+id/navFavoris"
+            android:title="@string/navFavoris" />
+
+        <item android:id="@+id/navPlusRecent"
+            android:title="@string/navPlusRecent" />
+
+        <item android:id="@+id/navPlusPorte"
+            android:title="@string/navPlusPorte" />
+
+    </group>
+
+    <group>
+
+        <item android:id="@+id/navReglages"
+            android:title="@string/navReglages" />
+
+    </group>
+
+</menu>
