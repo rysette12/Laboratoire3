@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Laboratoire3</string>
+    <string name="ouvrir_desc">Ouvrir</string>
+    <string name="fermer_desc">Fermer</string>
 
     <string name="saison">Saison</string>
     <string name="type">Type</string>
