@@ -1,8 +1,6 @@
 package com.example.maryse.laboratoire3;
 
 import android.app.DatePickerDialog;
-import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,13 +9,11 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Calendar;
 
 public class AjouteFragment extends Fragment {
-    DataProjet myDb;
+    DatabaseHelper myDb;
     private EditText textDate;
     private int annee;
     private int mois;
@@ -31,7 +27,7 @@ public class AjouteFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_ajouter, null);
-        myDb = new DataProjet(this.getContext());
+        myDb = new DatabaseHelper(this.getContext());
 
         v.findViewById(R.id.buttonSauver).setOnClickListener(new View.OnClickListener() {
            @Override
