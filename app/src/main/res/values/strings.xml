@@ -9,6 +9,7 @@
     <string name="categorie">Categorie</string>
 
     <!-- Navigation Menu -->
+    <string name="navAccueil">Accueil</string>
     <string name="navEnsemble">Ensemble actuel</string>
     <string name="navAjouter">Ajouter un article</string>
     <string name="navEnsembles">Mes Ensembles</string>

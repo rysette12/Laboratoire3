@@ -3,6 +3,10 @@
 
     <group android:id="@+id/navGroup1" >
 
+        <item android:id="@+id/navAccueil"
+            android:title="@string/navAccueil"
+            android:icon="@drawable/ic_baseline_home_24px" />
+
         <item android:id="@+id/navEnsemble"
             android:title="@string/navEnsemble"
             android:icon="@drawable/ic_clothes" />
