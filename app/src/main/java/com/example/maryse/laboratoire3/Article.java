@@ -9,8 +9,8 @@ public class Article {
     private String materiel;
     private String categorie;
     private String nomArticle;
-    private Date dateAchat;
-    private Date DernierDatePortee;
+    private String  dateAchat;
+    private String DernierDatePortee;
 
     public String getVetement() {
         return vetement;
@@ -36,11 +36,11 @@ public class Article {
         return nomArticle;
     }
 
-    public Date getDateAchat() {
+    public String getDateAchat() {
         return dateAchat;
     }
 
-    public Date getDernierDatePortee() {
+    public String getDernierDatePortee() {
         return DernierDatePortee;
     }
 
@@ -68,15 +68,15 @@ public class Article {
         this.nomArticle = nomArticle;
     }
 
-    public void setDateAchat(Date dateAchat) {
+    public void setDateAchat(String dateAchat) {
         this.dateAchat = dateAchat;
     }
 
-    public void setDernierDatePortee(Date dernierDatePortee) {
+    public void setDernierDatePortee(String dernierDatePortee) {
         DernierDatePortee = dernierDatePortee;
     }
 
-    public Article(String vetement, String couleur, String saison, String materiel, String categorie, String nomArticle, Date dateAchat, Date dernierDatePortee) {
+    public Article(String vetement, String couleur, String saison, String materiel, String categorie, String nomArticle, String dateAchat, String dernierDatePortee) {
         this.vetement = vetement;
         this.couleur = couleur;
         this.saison = saison;
