@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <group android:id="@+id/navGroup1" >
+
+        <item android:id="@+id/navEnsemble"
+            android:title="@string/navEnsemble"
+            android:icon="@drawable/ic_clothes" />
+
+    </group>
+
+    <group android:id="@+id/navGroup2" >
+
+        <item android:id="@+id/navAjouter"
+            android:title="@string/navAjouter"
+            android:icon="@drawable/ic_baseline_add_24px" />
+
+        <item android:id="@+id/navEnsembles"
+            android:title="@string/navEnsembles"
+            android:icon="@drawable/ic_clothes" />
+
+    </group>
+
+    <item android:title="@string/navLister" >
+        <menu>
+
+            <item android:id="@+id/navTous"
+                android:title="@string/navTous"
+                android:icon="@drawable/ic_baseline_list_24px" />
+
+            <item android:id="@+id/navSaison"
+                android:title="@string/saison"
+                android:icon="@drawable/ic_baseline_list_24px" />
+
+            <item android:id="@+id/navType"
+                android:title="@string/type"
+                android:icon="@drawable/ic_baseline_list_24px" />
+
+            <item android:id="@+id/navCouleur"
+                android:title="@string/couleur"
+                android:icon="@drawable/ic_baseline_list_24px" />
+
+            <item android:id="@+id/navCategorie"
+                android:title="@string/categorie"
+                android:icon="@drawable/ic_baseline_list_24px" />
+
+        </menu>
+    </item>
+
+    <group android:id="@+id/navGroup3" >
+
+        <item android:id="@+id/navFavoris"
+            android:title="@string/navFavoris"
+            android:icon="@drawable/ic_baseline_favorite_24px" />
+
+        <item android:id="@+id/navPlusRecent"
+            android:title="@string/navPlusRecent"
+            android:icon="@drawable/ic_baseline_access_time_24px" />
+
+        <item android:id="@+id/navPlusPorte"
+            android:title="@string/navPlusPorte"
+            android:icon="@drawable/ic_baseline_done_24px" />
+
+    </group>
+
+    <group android:id="@+id/navGroup4" >
+
+        <item android:id="@+id/navReglages"
+            android:title="@string/navReglages"
+            android:icon="@drawable/ic_baseline_settings_20px" />
+
+    </group>
+
+</menu>
