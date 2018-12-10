@@ -7,7 +7,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.hello_world);
+        setContentView(R.layout.textview_layout);
     }
 
 }

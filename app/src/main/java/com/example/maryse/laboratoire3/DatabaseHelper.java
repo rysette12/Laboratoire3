@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "vestiaire_directory";
+    public static final String VESTIAIRE_TABLE = "vestiaire";
     public static final String  VETEMENT_COLUMN = "vetement";
     public static final String  COULEUR_COLUMN = "saison";
     public static final String  SAISON_COLUMN = "Couleur";
@@ -18,20 +19,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String FAVORIS_COLUMN ="favoris";
 
     public DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, 1);
+        super(context, DATABASE_NAME, null, 2);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "CREATE TABLE IF NOT EXISTS vestiaire (" +
+        String sql = "CREATE TABLE IF NOT EXISTS " + VESTIAIRE_TABLE + " (" +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                VETEMENT_COLUMN +"TEXT, " +
-                COULEUR_COLUMN +"TEXT, " +
-                SAISON_COLUMN+"TEXT, " +
-                MATERIEL_COLUMN+"TEXT, " +
-                CATEGORIE_COLUMN  +"TEXT," +
-                NOM_COLUMN +"TEXT, " +
-                FAVORIS_COLUMN+"NUMERIC," +
+                VETEMENT_COLUMN + " TEXT, " +
+                COULEUR_COLUMN + " TEXT, " +
+                SAISON_COLUMN+ " TEXT, " +
+                MATERIEL_COLUMN+ " TEXT, " +
+                CATEGORIE_COLUMN  + " TEXT," +
+                NOM_COLUMN + " TEXT, " +
+                FAVORIS_COLUMN + " NUMERIC," +
                 "dateAchat DATE, " +
                 "situation TEXT)";
 
@@ -48,6 +49,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL(sql);
         db.execSQL(sql2);  db.execSQL(sql3);   db.execSQL(sql4);
+
+        for (int i = 0; i < 10; i++ ){
+            ContentValues values = new ContentValues();
+            values.put(VETEMENT_COLUMN, "VETEMENT");
+            values.put(COULEUR_COLUMN, "COULEUR");
+            if (i %2 == 0)
+            values.put(SAISON_COLUMN, "ÉTÉ");
+            else
+                values.put(SAISON_COLUMN, "Hiver");
+            values.put(MATERIEL_COLUMN, "MATERIEL");
+            values.put(CATEGORIE_COLUMN, "CATEGORIE");
+            values.put(NOM_COLUMN, "NOM");
+            values.put(FAVORIS_COLUMN, 1);
+            db.insert(VESTIAIRE_TABLE, null, values);
+        }
+
 
     }
 
@@ -77,15 +94,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // return  cursor ;
     // }
 
+    public  Cursor afficherTous(SQLiteDatabase db)  {
+        Cursor cursor = db.rawQuery("SELECT * FROM vestiaire as vest", null);
+        return  cursor ;
+    }
+
     public  Cursor afficherCouleur(SQLiteDatabase db, String couleur   )  {
-        Cursor cursor = db.rawQuery("SELECT * FROM vestiaire as vest WHERE vest.COULEUR_COLUMN = ?",
+        Cursor cursor = db.rawQuery("SELECT * FROM vestiaire as vest WHERE vest." + COULEUR_COLUMN + " = ?",
                 new String[]{""+couleur});
         return  cursor ;
     }
 
-    public  Cursor afficherSaison(SQLiteDatabase db, String saison   )  {
-        Cursor cursor = db.rawQuery("SELECT * FROM vestiaire as vest WHERE vest.SAISON_COLUMN = ?",
-                new String[]{""+saison});
+    public  Cursor afficherSaison(SQLiteDatabase db, String saison)  {
+        Cursor cursor = db.rawQuery("SELECT * FROM vestiaire as vest WHERE vest." + SAISON_COLUMN + " like ?",
+                new String[]{ saison });
         return  cursor ;
     }
 

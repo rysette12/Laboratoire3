@@ -7,6 +7,7 @@
     <string name="type">Type</string>
     <string name="couleur">Couleur</string>
     <string name="categorie">Categorie</string>
+    <string name="aucun_resultat">Aucun résultat.</string>
 
     <!-- Navigation Menu -->
     <string name="navAccueil">Accueil</string>
