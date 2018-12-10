@@ -26,7 +26,7 @@ public class AjouteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ajouter);
+        setContentView(R.layout.fragment_ajouter);
         myDb = new DatabaseHelper(this);
         btnEfface =  findViewById(R.id.buttonDate);
         btnAjouter =  findViewById(R.id.buttonSauver);
