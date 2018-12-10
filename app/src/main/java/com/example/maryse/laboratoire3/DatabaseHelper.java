@@ -66,6 +66,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(NOM_COLUMN, article.getNomArticle());
         db.insert("vestiaires", null,values);
     }
+    public void modifierArticle(SQLiteDatabase db , Article article, int id ) {
+        ContentValues values = new ContentValues();
+        values.put(VETEMENT_COLUMN , article.getVetement());
+        values.put(COULEUR_COLUMN ,article.getCouleur());
+        values.put(SAISON_COLUMN, article.getSaison());
+        values.put(MATERIEL_COLUMN, article.getMateriel());
+        values.put(NOM_COLUMN, article.getNomArticle());
+        db.update("vestiaires", values,"_id = ?",  new String[]{""+id});
+    }
+    public Cursor supprimerArticle(SQLiteDatabase db , int id ) {
+        Cursor cursor = db.rawQuery("DELETE FROM vestiaire WHERE _id = ?",
+                new String[]{""+id});
+        return cursor;
+    }
 
     public  Cursor afficherdetails(SQLiteDatabase db, int id  )  {
         Cursor cursor = db.rawQuery("SELECT * FROM vestiaire as vest WHERE vest._id = ?",
