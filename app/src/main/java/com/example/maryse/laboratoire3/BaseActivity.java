@@ -48,8 +48,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
 
         navigationView = findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -76,7 +78,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                         i = new Intent(getApplicationContext(), MainActivity.class);
                         break;
                     case R.id.navSaison:
-                        i = new Intent(getApplicationContext(), MainActivity.class);
+                        i = new Intent(getApplicationContext(), ListerParSaisonActivity.class);
                         break;
                     case R.id.navType:
                         i = new Intent(getApplicationContext(), MainActivity.class);
