@@ -73,7 +73,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(SAISON_COLUMN, article.getSaison());
         values.put(MATERIEL_COLUMN, article.getMateriel());
         values.put(NOM_COLUMN, article.getNomArticle());
-        db.update("vestiaires", values,"_id = ?",  new String[]{""+id});
+
+        db.update("vestiaires", values,"_id = ?",   new String[]{""+id});
     }
     public Cursor supprimerArticle(SQLiteDatabase db , int id ) {
         Cursor cursor = db.rawQuery("DELETE FROM vestiaire WHERE _id = ?",
