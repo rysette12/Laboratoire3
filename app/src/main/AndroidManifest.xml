@@ -18,6 +18,16 @@
         </activity>
         <activity android:name=".ListerParSaisonActivity"
             android:theme="@style/AppThemeNoActionBar"/>
+        <activity android:name=".ListerParTypeActivity"
+            android:theme="@style/AppThemeNoActionBar"/>
+        <activity android:name=".ListerParCouleurActivity"
+            android:theme="@style/AppThemeNoActionBar"/>
+        <activity android:name=".ListerParCategorieActivity"
+            android:theme="@style/AppThemeNoActionBar"/>
+        <activity android:name=".ListerFavorisActivity"/>
+        <activity android:name=".ListerPlusRecentActivity"/>
+        <activity android:name=".ListerPlusPorteActivity"/>
+        <activity android:name=".ReglagesActivity"/>
     </application>
 
 </manifest>

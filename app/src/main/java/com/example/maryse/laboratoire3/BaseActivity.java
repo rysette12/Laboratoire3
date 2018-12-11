@@ -81,25 +81,25 @@ public abstract class BaseActivity extends AppCompatActivity {
                         i = new Intent(getApplicationContext(), ListerParSaisonActivity.class);
                         break;
                     case R.id.navType:
-                        i = new Intent(getApplicationContext(), MainActivity.class);
+                        i = new Intent(getApplicationContext(), ListerParTypeActivity.class);
                         break;
                     case R.id.navCouleur:
-                        i = new Intent(getApplicationContext(), MainActivity.class);
+                        i = new Intent(getApplicationContext(), ListerParCouleurActivity.class);
                         break;
                     case R.id.navCategorie:
-                        i = new Intent(getApplicationContext(), MainActivity.class);
+                        i = new Intent(getApplicationContext(), ListerParCategorieActivity.class);
                         break;
                     case R.id.navFavoris:
-                        i = new Intent(getApplicationContext(), MainActivity.class);
+                        i = new Intent(getApplicationContext(), ListerFavorisActivity.class);
                         break;
                     case R.id.navPlusRecent:
-                        i = new Intent(getApplicationContext(), MainActivity.class);
+                        i = new Intent(getApplicationContext(), ListerPlusRecentActivity.class);
                         break;
                     case R.id.navPlusPorte:
-                        i = new Intent(getApplicationContext(), MainActivity.class);
+                        i = new Intent(getApplicationContext(), ListerPlusPorteActivity.class);
                         break;
                     case R.id.navReglages:
-                        i = new Intent(getApplicationContext(), MainActivity.class);
+                        i = new Intent(getApplicationContext(), ReglagesActivity.class);
                         break;
                     default:
                         i = new Intent(getApplicationContext(), MainActivity.class);

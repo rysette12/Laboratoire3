@@ -19,7 +19,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String FAVORIS_COLUMN ="favoris";
 
     public DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, 2);
+        super(context, DATABASE_NAME, null, 3);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             values.put(MATERIEL_COLUMN, "MATERIEL");
             values.put(CATEGORIE_COLUMN, "CATEGORIE");
             values.put(NOM_COLUMN, "NOM");
-            values.put(FAVORIS_COLUMN, 1);
+            values.put(FAVORIS_COLUMN, (i %2 == 0)?1:0);
             db.insert(VESTIAIRE_TABLE, null, values);
         }
 
@@ -112,21 +112,37 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public  Cursor afficherCategorie(SQLiteDatabase db, String categorie   )  {
-        Cursor cursor = db.rawQuery("SELECT * FROM vestiaire as vest WHERE vest. CATEGORIE_COLUMN  = ?",
+        Cursor cursor = db.rawQuery("SELECT * FROM vestiaire as vest WHERE vest." + CATEGORIE_COLUMN + " = ?",
                 new String[]{""+categorie});
         return  cursor ;
     }
 
-    public  Cursor afficherType(SQLiteDatabase db, String type   )  {
-        Cursor cursor = db.rawQuery("SELECT * FROM vestiaire as vest WHERE vest.VETEMENT_COLUMN  = ?",
+    public  Cursor afficherType(SQLiteDatabase db, String type)  {
+        Cursor cursor = db.rawQuery("SELECT * FROM vestiaire as vest WHERE vest." + VETEMENT_COLUMN + " = ?",
                 new String[]{""+type});
         return  cursor ;
     }
 
-    public  Cursor afficherFavoris(SQLiteDatabase db, int favoris   )  {
-        Cursor cursor = db.rawQuery("SELECT * FROM vestiaire as vest WHERE vest.FAVORIS_COLUMN  = ?",
-                new String[]{""+favoris});
+    public  Cursor afficherFavoris(SQLiteDatabase db)  {
+        Cursor cursor = db.rawQuery("SELECT * FROM vestiaire as vest WHERE vest." + FAVORIS_COLUMN + " = ?",
+                new String[]{""+1});
         return  cursor ;
     }
+
+    public  Cursor afficherPlusRecent(SQLiteDatabase db)  {
+        Cursor cursor = db.rawQuery("SELECT * FROM vestiaire as vest WHERE vest." + FAVORIS_COLUMN + " = ?",
+                new String[]{""+1});
+        return  cursor ;
+    }
+
+    public  Cursor afficherPlusPorte(SQLiteDatabase db)  {
+        Cursor cursor = db.rawQuery("SELECT * FROM vestiaire as vest WHERE vest." + FAVORIS_COLUMN + " = ?",
+                new String[]{""+1});
+        return  cursor ;
+    }
+
+    public void ajouterType(SQLiteDatabase db, String type) {}
+    public void ajouterCouleur(SQLiteDatabase db, String type) {}
+    public void ajouterCategorie(SQLiteDatabase db, String type) {}
 
 }
