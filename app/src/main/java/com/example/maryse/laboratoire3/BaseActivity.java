@@ -21,6 +21,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private ActionBarDrawerToggle drawerToggle;
     private NavigationView navigationView;
     private static final String SELECTED_ITEM_ID_KEY = "com.example.maryse.laboratoire3.SELECTED_ITEM_ID_KEY";
+    public static final String ARTICLE_ID_KEY = "com.example.maryse.laboratoire3.ARTICLE_ID_KEY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
