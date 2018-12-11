@@ -16,12 +16,14 @@ public class dataHelp extends SQLiteOpenHelper {
         public static final String NOM_COLUMN ="nom";
         public static final String FAVORIS_COLUMN ="favoris";
         public static final String IMAGE_COLUMN ="images";
+        public static final String  DATE_ACHAT ="dateAchat";
+        public static final String  DATE_PORTEE ="datePortee";
+
         public static final String TABLE_NAME ="utilisateur";
         public static final String  PASSWORD_COLUMN = "password";
         public static final String PRENOM_COLUMN="prenom";
         public static final String ADRESSE_COLUMN ="adresse_courriel" ;
-        public static final String  DATE_ACHAT ="dateAchat";
-        public static final String  DATE_PORTEE ="datePortee";
+
         public dataHelp(Context context) {
             super(context, DATABASE_NAME, null, 1);
         }

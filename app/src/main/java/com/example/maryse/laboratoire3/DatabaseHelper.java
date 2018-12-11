@@ -9,22 +9,25 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "vestiaire_directory";
-    public static final String  VETEMENT_ID = "NumeroVetement";
-    public static final String VETEMENT_TABLE = "TYpeVetement";
-    public static final String  COULEUR_TABLE = "Couleur";
-    public static final String id_couleur_COLUMN = "_id_couleur";
-    public static final String  SAISON_COLUMN = "saison";
-    public static final String  MATERIEL_COLUMN = "materiel";
-    public static final String CATEGORIE_TABLE="categorie";
-    public static final String NUMERO_CATEGORIE="numero_categorie";
-    public static final String NOM_COLUMN ="nom";
-    public static final String FAVORIS_COLUMN ="favoris";
-    public static final String  PASSWORD_COLUMN = "password";
-    public static final String PRENOM_COLUMN="prenom";
-    public static final String ADRESSE_COLUMN ="adresse_courriel" ;
-    public static final String  DATE_ACHAT ="dateAchat";
-    public static final String  DATE_PORTEE ="datePortee";
-    public static final String TABLE_NAME ="utilisateur";
+    public static final String COLONNE_ID = "_id";
+    public static final String COLONNE_DESCRIPTION = "description";
+
+    public static final String TABLE_ARTICLE = "articles";
+    public static final String COLONNE_SAISON = "saison";
+    public static final String COLONNE_TYPE = "type";
+    public static final String COLONNE_COULEUR = "couleur";
+    public static final String COLONNE_CATEGORIE = "categorie";
+    public static final String COLONNE_FAVORIS ="favoris";
+    public static final String COLONNE_DATE = "derniereDate";
+
+    public static final String TABLE_TYPE = "types";
+    public static final String TABLE_COULEUR = "couleurs";
+    public static final String TABLE_CATEGORIE = "categorie";
+
+    public static final String TABLE_UTILISATEUR ="utilisateurs";
+    public static final String COLONNE_PASSWORD = "password";
+    public static final String COLONNE_PRENOM ="prenom";
+    public static final String COLONNE_ADRESSE ="adresse_courriel" ;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -33,31 +36,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String sql = "CREATE TABLE IF NOT EXISTS vestiaire (" +
-                "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                id_couleur_COLUMN +"INTEGER, " +
-                VETEMENT_ID +"TEXT," +
-                SAISON_COLUMN +"TEXT , " +
-                MATERIEL_COLUMN+"TEXT, " +
-                NUMERO_CATEGORIE  +"TEXT," +
-                NOM_COLUMN +"TEXT, " +
-                FAVORIS_COLUMN+"NUMERIC," +
-                "dateAchat DATE, " +
-                "situation TEXT)";
+                COLONNE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLONNE_DESCRIPTION + " INTEGER, " +
+                COLONNE_SAISON + " TEXT, " +
+                COLONNE_TYPE + " INTEGER REFERENCES " + TABLE_TYPE + "(" + COLONNE_ID + "), " +
+                COLONNE_COULEUR + " INTEGER REFERENCES " + TABLE_COULEUR + "(" + COLONNE_ID + "), " +
+                COLONNE_CATEGORIE + " INTEGER REFERENCES " + TABLE_CATEGORIE + "(" + COLONNE_ID + "), " +
+                COLONNE_FAVORIS + " NUMERIC, " +
+                COLONNE_DATE + " DATE)";
 
-        String sql2 = "CREATE TABLE IF NOT EXISTS " + COULEUR_TABLE +"(" +
+        String sql2 = "CREATE TABLE IF NOT EXISTS " + TABLE_COULEUR +"(" +
                 id_couleur_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                NOM_COLUMN+" TEXT)";
-        String sql3 = "CREATE TABLE IF NOT EXISTS " +  CATEGORIE_TABLE + "(" +
+                COLONNE_DESCRIPTION +" TEXT)";
+        String sql3 = "CREATE TABLE IF NOT EXISTS " + TABLE_CATEGORIE + "(" +
                 NUMERO_CATEGORIE +"INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                NOM_COLUMN+"TEXT)";
+                COLONNE_DESCRIPTION +"TEXT)";
 
-        String sql4 = "CREATE TABLE IF NOT EXISTS "+ VETEMENT_TABLE + "(" +
-                VETEMENT_ID+"INTEGER PRIMARY KEY AUTOINCREMENT, " +
+        String sql4 = "CREATE TABLE IF NOT EXISTS "+ TABLE_ARTICLE + "(" +
+                COLONNE_TYPE +"INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "type TEXT)";
 
         String sql5 = "CREATE TABLE IF NOT EXISTS "
-                +TABLE_NAME+ "(" +" _id INTEGER PRIMARY KEY AUTOINCREMENT,"+
-                NOM_COLUMN +"TEXT,"+  PRENOM_COLUMN +"TEXT,"+ PASSWORD_COLUMN +"TEXT," + ADRESSE_COLUMN +"TEXT)";
+                + TABLE_UTILISATEUR + "(" +" _id INTEGER PRIMARY KEY AUTOINCREMENT,"+
+                COLONNE_DESCRIPTION +"TEXT,"+ COLONNE_PRENOM +"TEXT,"+ COLONNE_PASSWORD +"TEXT," + COLONNE_ADRESSE +"TEXT)";
         db.execSQL(sql);
         db.execSQL(sql2);  db.execSQL(sql3);   db.execSQL(sql4);
         db.execSQL(sql5);
@@ -73,34 +74,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String couleur ="";
         String categorie="";
         String typeVetement="";
-        if((!isExist(article.getCouleur(),db,"couleur"))&&(!isExist(article.getCategorie(),db,CATEGORIE_TABLE)) ){
-            db.execSQL("INSERT INTO couleur ( "+NOM_COLUMN+") VALUES('"+article.getCouleur()+"')");
+        if((!isExist(article.getCouleur(),db,"couleur"))&&(!isExist(article.getCategorie(),db, TABLE_CATEGORIE)) ){
+            db.execSQL("INSERT INTO couleur ( "+ COLONNE_DESCRIPTION +") VALUES('"+article.getCouleur()+"')");
             Cursor cursor = db.rawQuery("SELECT * FROM couleur as c  WHERE c.NOM_COLUMN = ?",new String[]{""+article.getCouleur()});
             couleur = cursor.getString(cursor.getColumnIndex( id_couleur_COLUMN));
-            db.execSQL("INSERT INTO" +CATEGORIE_TABLE+"( "+NOM_COLUMN+") VALUES('"+article.getCategorie()+"')");
-            Cursor cursor1 = db.rawQuery("SELECT * FROM "+CATEGORIE_TABLE+" as c  WHERE c.NOM_COLUMN = ?",new String[]{""+article.getCategorie()});
-            categorie = cursor1.getString(cursor1.getColumnIndex( VETEMENT_ID));
+            db.execSQL("INSERT INTO" + TABLE_CATEGORIE +"( "+ COLONNE_DESCRIPTION +") VALUES('"+article.getCategorie()+"')");
+            Cursor cursor1 = db.rawQuery("SELECT * FROM "+ TABLE_CATEGORIE +" as c  WHERE c.NOM_COLUMN = ?",new String[]{""+article.getCategorie()});
+            categorie = cursor1.getString(cursor1.getColumnIndex(COLONNE_TYPE));
         }
-        if (!isExist(article.getVetement(),db,VETEMENT_TABLE)){
-            db.execSQL("INSERT INTO" +VETEMENT_TABLE+"( "+NOM_COLUMN+") VALUES('"+article.getVetement()+"')");
-            Cursor cursor1 = db.rawQuery("SELECT * FROM "+VETEMENT_TABLE+" as c  WHERE c.NOM_COLUMN = ?",new String[]{""+article.getVetement()});
-            typeVetement = cursor1.getString(cursor1.getColumnIndex( VETEMENT_ID));
+        if (!isExist(article.getVetement(),db, TABLE_ARTICLE)){
+            db.execSQL("INSERT INTO" + TABLE_ARTICLE +"( "+ COLONNE_DESCRIPTION +") VALUES('"+article.getVetement()+"')");
+            Cursor cursor1 = db.rawQuery("SELECT * FROM "+ TABLE_ARTICLE +" as c  WHERE c.NOM_COLUMN = ?",new String[]{""+article.getVetement()});
+            typeVetement = cursor1.getString(cursor1.getColumnIndex(COLONNE_TYPE));
         }
         else{
             Cursor cursor = db.rawQuery("SELECT * FROM couleur as c  WHERE c.NOM_COLUMN = ?",new String[]{""+article.getCouleur()});
             couleur =cursor.getString(cursor.getColumnIndex( id_couleur_COLUMN));
-            Cursor cursor1 = db.rawQuery("SELECT * FROM "+CATEGORIE_TABLE+" as c  WHERE c.NOM_COLUMN = ?",new String[]{""+article.getCategorie()});
+            Cursor cursor1 = db.rawQuery("SELECT * FROM "+ TABLE_CATEGORIE +" as c  WHERE c.NOM_COLUMN = ?",new String[]{""+article.getCategorie()});
             categorie = cursor1.getString(cursor1.getColumnIndex( NUMERO_CATEGORIE));
-            Cursor cursor2= db.rawQuery("SELECT * FROM "+VETEMENT_TABLE+" as c  WHERE c.NOM_COLUMN = ?",new String[]{""+article.getVetement()});
-            typeVetement = cursor1.getString(cursor1.getColumnIndex( VETEMENT_ID));
+            Cursor cursor2= db.rawQuery("SELECT * FROM "+ TABLE_ARTICLE +" as c  WHERE c.NOM_COLUMN = ?",new String[]{""+article.getVetement()});
+            typeVetement = cursor1.getString(cursor1.getColumnIndex(COLONNE_TYPE));
         }
         ContentValues values = new ContentValues();
-        values.put(VETEMENT_ID , typeVetement);
+        values.put(COLONNE_TYPE, typeVetement);
         values.put(id_couleur_COLUMN ,couleur);
         values.put(NUMERO_CATEGORIE,categorie);
-        values.put(SAISON_COLUMN, article.getSaison());
+        values.put(COLONNE_SAISON, article.getSaison());
         values.put(MATERIEL_COLUMN, article.getMateriel());
-        values.put(NOM_COLUMN, article.getNomArticle());
+        values.put(COLONNE_DESCRIPTION, article.getNomArticle());
         db.insert("vestiaires", null,values);
     }
     public  Cursor afficherdetails(SQLiteDatabase db, int id  )  {
@@ -143,6 +144,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT * FROM vestiaire as vest WHERE vest.FAVORIS_COLUMN  = ?",
                 new String[]{""+favoris});
         return  cursor ;
+    }
+
+    public void ajouterType(SQLiteDatabase db, String type) {}
+    public void ajouterCouleur(SQLiteDatabase db, String type) {}
+    public void ajouterCategorie(SQLiteDatabase db, String type) {}
+
+    public void ajouterAuxFavoris(SQLiteDatabase db, int id) {
+        ContentValues values = new ContentValues();
+        values.put(COLONNE_FAVORIS, 1);
+        db.update(TABLE_ARTICLE, values, COLONNE_ID + " = ?",
+                new String[]{Integer.toString(id)});
+    }
+
+    public void retirerDesFavoris(SQLiteDatabase db, int id) {
+        ContentValues values = new ContentValues();
+        values.put(COLONNE_FAVORIS, 0);
+        db.update(TABLE_ARTICLE, values, COLONNE_ID + " = ?",
+                new String[]{Integer.toString(id)});
     }
 
 }
