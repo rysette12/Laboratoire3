@@ -13,7 +13,7 @@ public class ListerParCouleurActivity extends ListerActivity {
         tabTitles.add("Couleur3");
 
         for (int i = 0; i < tabTitles.size(); i++) {
-            Cursor c = db.afficherCouleur(db.getReadableDatabase(), tabTitles.get(i));
+            Cursor c = db.listerParCouleur(db.getReadableDatabase(), tabTitles.get(i));
             fragments.add(ListeArticlesFragment.newInstance(c));
         }
 

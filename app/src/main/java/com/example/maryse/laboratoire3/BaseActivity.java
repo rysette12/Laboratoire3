@@ -70,13 +70,13 @@ public abstract class BaseActivity extends AppCompatActivity {
                         i = new Intent(getApplicationContext(), MainActivity.class);
                         break;
                     case R.id.navAjouter:
-                        i = new Intent(getApplicationContext(), MainActivity.class);
+                        i = new Intent(getApplicationContext(), AjouterActivity.class);
                         break;
                     case R.id.navEnsembles:
                         i = new Intent(getApplicationContext(), MainActivity.class);
                         break;
                     case R.id.navTous:
-                        i = new Intent(getApplicationContext(), MainActivity.class);
+                        i = new Intent(getApplicationContext(), ListerToutActivity.class);
                         break;
                     case R.id.navSaison:
                         i = new Intent(getApplicationContext(), ListerParSaisonActivity.class);

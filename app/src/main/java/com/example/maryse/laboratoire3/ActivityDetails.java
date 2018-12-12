@@ -1,22 +1,10 @@
 package com.example.maryse.laboratoire3;
-import java.util.ArrayList;
-import java.util.List;
-import android.app.VoiceInteractor;
-import android.app.ListActivity;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Bundle;
-import android.text.Layout;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 public class ActivityDetails extends BaseActivity {
         protected TextView articleName;
         protected TextView articleCategorie;
@@ -34,10 +22,10 @@ public class ActivityDetails extends BaseActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.hello_world);
+            setContentView(R.layout.textview_layout);
             articleId = getIntent().getIntExtra("ARTICLE_ID", 0);
             db = data.getWritableDatabase();
-            cursor = data.afficherdetails(db,articleId);
+            cursor = data.detailsArticle(db,articleId);
             if (cursor.getCount() == 1)
             { cursor.moveToFirst();
                 articleName = (TextView) findViewById(R.id.textViewN);
@@ -59,7 +47,7 @@ public class ActivityDetails extends BaseActivity {
                 public void onClick(View v) {
                     db=  data.getWritableDatabase();
                    // Intent intent = new Intent( EdittActivity.class);
-                    cursor= data.afficherdetails(db,articleId);
+                    cursor= data.detailsArticle(db,articleId);
                     //intent.putExtra("ARTICLE_ID", cursor.getInt(cursor.getColumnIndex("_id")));
                     //startActivity(intent);
 

@@ -14,7 +14,7 @@ public class ListerParSaisonActivity extends ListerActivity {
         tabTitles.add("Hiver");
 
         for (int i = 0; i < tabTitles.size(); i++) {
-            Cursor c = db.afficherSaison(db.getReadableDatabase(), tabTitles.get(i));
+            Cursor c = db.listerParSaison(db.getReadableDatabase(), tabTitles.get(i));
             fragments.add(ListeArticlesFragment.newInstance(c));
         }
 

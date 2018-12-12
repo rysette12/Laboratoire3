@@ -33,7 +33,7 @@ public class ListeArticlesFragment extends Fragment {
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(getContext(), DetailsActivity.class);
+                Intent i = new Intent(getContext(), MainActivity.class);//DetailsActivity.class);
                 articles.moveToPosition(position);
                 i.putExtra(BaseActivity.ARTICLE_ID_KEY, articles.getColumnIndexOrThrow(DatabaseHelper.COLONNE_ID));
                 startActivity(i);

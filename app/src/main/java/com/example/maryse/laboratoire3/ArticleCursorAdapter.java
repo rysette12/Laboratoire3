@@ -31,9 +31,9 @@ public class ArticleCursorAdapter extends CursorAdapter {
         String description = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLONNE_DESCRIPTION));
         String idd = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLONNE_ID));
         String type = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLONNE_TYPE));
-        String saison = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLONNE_COULEUR));
+        String saison = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLONNE_SAISON));
         String categorie = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLONNE_CATEGORIE));
-        String couleur = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLONNE_SAISON));
+        String couleur = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLONNE_COULEUR));
         int favoris = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLONNE_FAVORIS));
 
         tvType.setText(type);

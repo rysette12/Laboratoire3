@@ -1,19 +1,15 @@
 package com.example.maryse.laboratoire3;
 
-import java.util.Date;
-
 public class Article {
-    private String vetement;
+    private String type;
     private String couleur ;
     private String saison;
-    private String materiel;
     private String categorie;
     private String nomArticle;
-    private String  dateAchat;
     private String DernierDatePortee;
 
-    public String getVetement() {
-        return vetement;
+    public String getType() {
+        return type;
     }
 
     public String getCouleur() {
@@ -24,10 +20,6 @@ public class Article {
         return saison;
     }
 
-    public String getMateriel() {
-        return materiel;
-    }
-
     public String getCategorie() {
         return categorie;
     }
@@ -36,16 +28,12 @@ public class Article {
         return nomArticle;
     }
 
-    public String getDateAchat() {
-        return dateAchat;
-    }
-
     public String getDernierDatePortee() {
         return DernierDatePortee;
     }
 
-    public void setVetement(String vetement) {
-        this.vetement = vetement;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public void setCouleur(String couleur) {
@@ -56,10 +44,6 @@ public class Article {
         this.saison = saison;
     }
 
-    public void setMateriel(String materiel) {
-        this.materiel = materiel;
-    }
-
     public void setCategorie(String categorie) {
         this.categorie = categorie;
     }
@@ -68,22 +52,17 @@ public class Article {
         this.nomArticle = nomArticle;
     }
 
-    public void setDateAchat(String dateAchat) {
-        this.dateAchat = dateAchat;
-    }
-
     public void setDernierDatePortee(String dernierDatePortee) {
         DernierDatePortee = dernierDatePortee;
     }
 
-    public Article(String vetement, String couleur, String saison, String materiel, String categorie, String nomArticle, String dateAchat, String dernierDatePortee) {
-        this.vetement = vetement;
+    public Article(String type, String couleur, String saison, String categorie,
+        String nomArticle, String dateAchat, String dernierDatePortee) {
+        this.type = type;
         this.couleur = couleur;
         this.saison = saison;
-        this.materiel = materiel;
         this.categorie = categorie;
         this.nomArticle = nomArticle;
-        this.dateAchat = dateAchat;
         DernierDatePortee = dernierDatePortee;
     }
 

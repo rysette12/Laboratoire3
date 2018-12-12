@@ -13,7 +13,7 @@ public class ListerParCategorieActivity extends ListerActivity {
         tabTitles.add("Categorie3");
 
         for (int i = 0; i < tabTitles.size(); i++) {
-            Cursor c = db.afficherCategorie(db.getReadableDatabase(), tabTitles.get(i));
+            Cursor c = db.listerParCategorie(db.getReadableDatabase(), tabTitles.get(i));
             fragments.add(ListeArticlesFragment.newInstance(c));
         }
 
