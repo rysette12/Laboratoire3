@@ -11,7 +11,7 @@ public class ListerPlusRecentActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.listview_layout);
 
-        DatabaseHelper db = new DatabaseHelper(getApplicationContext());
+        DatabaseHelper db = new DatabaseHelper(this);
         Cursor articles = db.afficherPlusRecent(db.getReadableDatabase());
         ListView lvItems = (ListView) findViewById(R.id.listView);
         ArticleCursorAdapter todoAdapter = new ArticleCursorAdapter(this, articles);

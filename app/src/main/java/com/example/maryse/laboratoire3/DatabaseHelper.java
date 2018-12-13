@@ -3,6 +3,7 @@ package com.example.maryse.laboratoire3;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -11,10 +12,9 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "vestiaire_directory";
+    public static final String DATABASE_NAME = "vestiaire";
     public static final String COLONNE_ID = "_id";
-    public static final String COLONNE_DESCRIPTION = "description";
-    public static final String COLONNE_NAME = "_id";
+    public static final String COLONNE_NOM = "nom";
 
     public static final String TABLE_ARTICLE = "articles";
     public static final String COLONNE_SAISON = "saison";
@@ -39,25 +39,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String SELECT_ALL =
         "SELECT "
                 + TABLE_ARTICLE + "." + COLONNE_ID + ", "
-                + TABLE_ARTICLE + "." + COLONNE_DESCRIPTION + ", "
+                + TABLE_ARTICLE + "." + COLONNE_NOM + ", "
                 + TABLE_ARTICLE + "." + COLONNE_SAISON + ", "
                 + TABLE_TYPE + "." + COLONNE_TYPE + ", "
                 + TABLE_COULEUR + "." + COLONNE_COULEUR + ", "
-                + TABLE_CATEGORIE + "." + COLONNE_CATEGORIE
+                + TABLE_CATEGORIE + "." + COLONNE_CATEGORIE + ", "
+                + TABLE_ARTICLE + "." + COLONNE_FAVORIS + ", "
+                + TABLE_ARTICLE + "." + COLONNE_DATE
         + " FROM " + TABLE_ARTICLE + ", " + TABLE_TYPE + ", " + TABLE_COULEUR + ", " + TABLE_CATEGORIE
-        + " WHERE " + TABLE_ARTICLE + "." + COLONNE_TYPE + " = " + TABLE_TYPE+ "." + COLONNE_TYPE + " AND "
-            + TABLE_ARTICLE + "." + COLONNE_COULEUR + " = " + TABLE_COULEUR + "." + COLONNE_COULEUR + " AND "
-            + TABLE_ARTICLE + "." + COLONNE_CATEGORIE + " = " + TABLE_CATEGORIE + "." + COLONNE_CATEGORIE;
+        + " WHERE " + TABLE_ARTICLE + "." + COLONNE_TYPE + " = " + TABLE_TYPE + "." + COLONNE_ID
+            + " AND " + TABLE_ARTICLE + "." + COLONNE_COULEUR + " = " + TABLE_COULEUR + "." + COLONNE_ID
+            + " AND " + TABLE_ARTICLE + "." + COLONNE_CATEGORIE + " = " + TABLE_CATEGORIE + "." + COLONNE_ID;
 
     public DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, 3);
+        super(context, DATABASE_NAME, null, 8);
     }
 
     @Override
     public void onCreate (SQLiteDatabase db) {
         String sql = "CREATE TABLE IF NOT EXISTS " + TABLE_ARTICLE + " ("
                 + COLONNE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + COLONNE_DESCRIPTION + " INTEGER, "
+                + COLONNE_NOM + " INTEGER, "
                 + COLONNE_SAISON + " TEXT, "
                 + COLONNE_TYPE + " INTEGER REFERENCES " + TABLE_TYPE + "(" + COLONNE_ID + "), "
                 + COLONNE_COULEUR + " INTEGER REFERENCES " + TABLE_COULEUR + "(" + COLONNE_ID + "), "
@@ -83,7 +85,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         sql = "CREATE TABLE IF NOT EXISTS " + TABLE_UTILISATEUR + " ("
                 + COLONNE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + COLONNE_DESCRIPTION + " TEXT, "
+                + COLONNE_NOM + " TEXT, "
                 + COLONNE_PRENOM + " TEXT, "
                 + COLONNE_PASSWORD + " TEXT, "
                 + COLONNE_ADRESSE + " TEXT)";
@@ -102,6 +104,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+        db.execSQL("PRAGMA foreign_keys = ON;");
+    }
+
     // données de base de l'application //
     public void donnees (SQLiteDatabase db ) {
         ajouterType(db, "T-shirt");
@@ -113,12 +121,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ajouterCategorie(db, "Sports");
         ajouterCategorie(db, "Décontracté");
         ajouterCategorie(db, "Soiré");
+
+        ContentValues values = new ContentValues();
+        values.put(COLONNE_NOM, 1);
+        values.put(COLONNE_SAISON, 1);
+        values.put(COLONNE_TYPE, 1 );
+        values.put(COLONNE_COULEUR, 1);
+        values.put(COLONNE_CATEGORIE, 1);
+        db.insert(TABLE_ARTICLE, null, values);
     }
 
     // Ajouts //
     public void ajouterArticle (SQLiteDatabase db, Article article) {
         ContentValues values = new ContentValues();
-        values.put(COLONNE_DESCRIPTION, article.getNomArticle());
+        values.put(COLONNE_NOM, article.getNomArticle());
         values.put(COLONNE_SAISON, article.getSaison());
         values.put(COLONNE_TYPE, idType(db, article.getType()) );
         values.put(COLONNE_COULEUR, idCouleur(db, article.getCouleur()));
@@ -126,6 +142,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE_ARTICLE, null, values);
     }
 
+    // gestion des types, couleurs, catégories //
     public void ajouterType (SQLiteDatabase db, String type) {
         ContentValues values = new ContentValues();
         values.put(COLONNE_TYPE, type);
@@ -144,40 +161,89 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE_CATEGORIE, null, values);
     }
 
-    // lister les types, couleurs, catégories //
-    public Cursor tousLesTypes (SQLiteDatabase db) {
+    public ArrayList<String> tousLesTypes (SQLiteDatabase db) {
+        ArrayList<String> liste = new ArrayList<String>();
+
         Cursor cursor = db.rawQuery("SELECT " + COLONNE_TYPE + " FROM " + TABLE_TYPE, null);
-        return cursor;
+        for (int i = 0; i < cursor.getCount(); i++) {
+            cursor.moveToPosition(i);
+            liste.add(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLONNE_TYPE)));
+        }
+
+        return liste;
     }
 
-    public Cursor toutesLesCouleurs (SQLiteDatabase db ) {
+    public ArrayList<String> toutesLesCouleurs (SQLiteDatabase db ) {
+        ArrayList<String> liste = new ArrayList<String>();
+
         Cursor cursor = db.rawQuery("SELECT " + COLONNE_COULEUR + " FROM " + TABLE_COULEUR, null);
-        return cursor;
+        for (int i = 0; i < cursor.getCount(); i++) {
+            cursor.moveToPosition(i);
+            liste.add(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLONNE_COULEUR)));
+        }
+
+        return liste;
     }
 
-    public Cursor toutesLesCategories(SQLiteDatabase db) {
+    public ArrayList<String> toutesLesCategories (SQLiteDatabase db) {
+        ArrayList<String> liste = new ArrayList<String>();
+
         Cursor cursor = db.rawQuery("SELECT " + COLONNE_CATEGORIE + " FROM " + TABLE_CATEGORIE, null);
-        return cursor;
+        for (int i = 0; i < cursor.getCount(); i++) {
+            cursor.moveToPosition(i);
+            liste.add(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLONNE_CATEGORIE)));
+        }
+
+        return liste;
     }
 
     public String idType (SQLiteDatabase db, String type) {
-        Cursor cursor = db.rawQuery("SELECT " + COLONNE_ID + " FROM " + TABLE_CATEGORIE + " WHERE " + COLONNE_NAME + " = ? ",
+        Cursor cursor = db.rawQuery("SELECT " + COLONNE_ID + " FROM " + TABLE_CATEGORIE + " WHERE " + COLONNE_TYPE + " = ? ",
                 new String[]{type});
         return cursor.getString(cursor.getColumnIndex(COLONNE_ID));
     }
 
     public String idCouleur (SQLiteDatabase db, String couleur ) {
-        Cursor cursor = db.rawQuery("SELECT " + COLONNE_ID + " FROM " + TABLE_TYPE + " WHERE " + COLONNE_NAME + " = ? ",
+        Cursor cursor = db.rawQuery("SELECT " + COLONNE_ID + " FROM " + TABLE_TYPE + " WHERE " + COLONNE_COULEUR + " = ? ",
                 new String[]{couleur});
         return cursor.getString(cursor.getColumnIndex(COLONNE_ID));
     }
 
     public String idCategorie (SQLiteDatabase db, String categorie) {
-        Cursor cursor = db.rawQuery("SELECT " + COLONNE_ID + " FROM " + TABLE_CATEGORIE + " WHERE " + COLONNE_NAME + " = ? ",
+        Cursor cursor = db.rawQuery("SELECT " + COLONNE_ID + " FROM " + TABLE_CATEGORIE + " WHERE " + COLONNE_CATEGORIE + " = ? ",
                 new String[]{categorie});
         return cursor.getString(cursor.getColumnIndex(COLONNE_ID));
     }
 
+    public boolean supprimerType (SQLiteDatabase db, String type) {
+        boolean resultat;
+        try {
+            resultat = db.delete(TABLE_TYPE, COLONNE_TYPE + " = ?", new String[]{type}) > 0;
+        } catch (SQLiteConstraintException e) {
+            resultat = false;
+        }
+        return resultat;
+    }
+
+    public boolean supprimerCouleur (SQLiteDatabase db, String couleur ) {
+        boolean resultat;
+        try {
+            resultat = db.delete(TABLE_COULEUR, COLONNE_COULEUR + " = ?", new String[]{couleur}) > 0;
+        } catch (SQLiteConstraintException e) {
+            resultat = false;
+        }
+        return resultat;
+    }
+
+    public boolean supprimerCategorie (SQLiteDatabase db, String categorie) {
+        boolean resultat;
+        try {
+            resultat = db.delete(TABLE_CATEGORIE, COLONNE_CATEGORIE + " = ?", new String[]{categorie}) > 0;
+        } catch (SQLiteConstraintException e) {
+            resultat = false;
+        }
+        return resultat;
+    }
 
     // lister article. par id unique ou selon des critères //
     public Cursor detailsArticle (SQLiteDatabase db, int id) {

@@ -11,7 +11,7 @@ public class ListerFavorisActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.listview_layout);
 
-        DatabaseHelper db = new DatabaseHelper(getApplicationContext());
+        DatabaseHelper db = new DatabaseHelper(this);
         Cursor articles = db.listerArticlesFavoris(db.getReadableDatabase());
         ListView lvItems = (ListView) findViewById(R.id.listView);
         ArticleCursorAdapter todoAdapter = new ArticleCursorAdapter(this, articles);
