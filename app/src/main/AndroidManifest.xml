@@ -33,7 +33,6 @@
             android:theme="@style/AppThemeNoActionBar"/>
         <activity android:name=".ListerFavorisActivity"/>
         <activity android:name=".ListerPlusRecentActivity"/>
-        <activity android:name=".ListerPlusPorteActivity"/>
         <activity android:name=".ReglagesActivity"/>
 
         <provider

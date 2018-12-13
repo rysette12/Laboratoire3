@@ -96,9 +96,6 @@ public abstract class BaseActivity extends AppCompatActivity {
                     case R.id.navPlusRecent:
                         i = new Intent(getApplicationContext(), ListerPlusRecentActivity.class);
                         break;
-                    case R.id.navPlusPorte:
-                        i = new Intent(getApplicationContext(), ListerPlusPorteActivity.class);
-                        break;
                     case R.id.navReglages:
                         i = new Intent(getApplicationContext(), ReglagesActivity.class);
                         break;

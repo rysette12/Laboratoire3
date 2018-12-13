@@ -8,9 +8,11 @@ public class ListerParCategorieActivity extends ListerActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        tabTitles.add("Categorie1");
-        tabTitles.add("Categorie2");
-        tabTitles.add("Categorie3");
+        Cursor categories = db.toutesLesCategories(db.getReadableDatabase());
+        for (int i = 0; i < categories.getCount(); i++) {
+            categories.moveToPosition(i);
+            tabTitles.add(categories.getString(categories.getColumnIndex(DatabaseHelper.COLONNE_CATEGORIE)));
+        }
 
         for (int i = 0; i < tabTitles.size(); i++) {
             Cursor c = db.listerParCategorie(db.getReadableDatabase(), tabTitles.get(i));

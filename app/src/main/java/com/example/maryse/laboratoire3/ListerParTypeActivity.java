@@ -8,9 +8,11 @@ public class ListerParTypeActivity extends ListerActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        tabTitles.add("Type1");
-        tabTitles.add("Type2");
-        tabTitles.add("Type3");
+        Cursor types = db.tousLesTypes(db.getReadableDatabase());
+        for (int i = 0; i < types.getCount(); i++) {
+            types.moveToPosition(i);
+            tabTitles.add(types.getString(types.getColumnIndex(DatabaseHelper.COLONNE_TYPE)));
+        }
 
         for (int i = 0; i < tabTitles.size(); i++) {
             Cursor c = db.listerParType(db.getReadableDatabase(), tabTitles.get(i));

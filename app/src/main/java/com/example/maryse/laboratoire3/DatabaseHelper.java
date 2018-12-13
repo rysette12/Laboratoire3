@@ -33,12 +33,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLONNE_PRENOM ="prenom";
     public static final String COLONNE_ADRESSE ="adresse_courriel" ;
 
+    // requête de base permettant de sélectionner toutes les colonnes de TABLE_ARTICLE
+    // avec jointures sur les tables TABLE_TYPE, TABLE_COULEUR et TABLE_CATEGORIE.
+    // * Ajouter par concaténation une clause WHERE (etc) au besoin.
     private static final String SELECT_ALL =
         "SELECT "
+                + TABLE_ARTICLE + "." + COLONNE_ID + ", "
                 + TABLE_ARTICLE + "." + COLONNE_DESCRIPTION + ", "
                 + TABLE_ARTICLE + "." + COLONNE_SAISON + ", "
                 + TABLE_TYPE + "." + COLONNE_TYPE + ", "
-                + TABLE_COULEUR + "." + TABLE_COULEUR + ", "
+                + TABLE_COULEUR + "." + COLONNE_COULEUR + ", "
                 + TABLE_CATEGORIE + "." + COLONNE_CATEGORIE
         + " FROM " + TABLE_ARTICLE + ", " + TABLE_TYPE + ", " + TABLE_COULEUR + ", " + TABLE_CATEGORIE
         + " WHERE " + TABLE_ARTICLE + "." + COLONNE_TYPE + " = " + TABLE_TYPE+ "." + COLONNE_TYPE + " AND "
@@ -46,7 +50,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + TABLE_ARTICLE + "." + COLONNE_CATEGORIE + " = " + TABLE_CATEGORIE + "." + COLONNE_CATEGORIE;
 
     public DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, 1);
+        super(context, DATABASE_NAME, null, 3);
     }
 
     @Override
@@ -98,7 +102,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // INSERT //
+    // données de base de l'application //
+    public void donnees (SQLiteDatabase db ) {
+        ajouterType(db, "T-shirt");
+        ajouterType(db, "Pantalon");
+        ajouterType(db, "Robe");
+        ajouterCouleur(db, "Rouge");
+        ajouterCouleur(db, "Jaune");
+        ajouterCouleur(db, "Blanc");
+        ajouterCategorie(db, "Sports");
+        ajouterCategorie(db, "Décontracté");
+        ajouterCategorie(db, "Soiré");
+    }
+
+    // Ajouts //
     public void ajouterArticle (SQLiteDatabase db, Article article) {
         ContentValues values = new ContentValues();
         values.put(COLONNE_DESCRIPTION, article.getNomArticle());
@@ -127,6 +144,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE_CATEGORIE, null, values);
     }
 
+    // lister les types, couleurs, catégories //
+    public Cursor tousLesTypes (SQLiteDatabase db) {
+        Cursor cursor = db.rawQuery("SELECT " + COLONNE_TYPE + " FROM " + TABLE_TYPE, null);
+        return cursor;
+    }
+
+    public Cursor toutesLesCouleurs (SQLiteDatabase db ) {
+        Cursor cursor = db.rawQuery("SELECT " + COLONNE_COULEUR + " FROM " + TABLE_COULEUR, null);
+        return cursor;
+    }
+
+    public Cursor toutesLesCategories(SQLiteDatabase db) {
+        Cursor cursor = db.rawQuery("SELECT " + COLONNE_CATEGORIE + " FROM " + TABLE_CATEGORIE, null);
+        return cursor;
+    }
+
     public String idType (SQLiteDatabase db, String type) {
         Cursor cursor = db.rawQuery("SELECT " + COLONNE_ID + " FROM " + TABLE_CATEGORIE + " WHERE " + COLONNE_NAME + " = ? ",
                 new String[]{type});
@@ -145,6 +178,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor.getString(cursor.getColumnIndex(COLONNE_ID));
     }
 
+
+    // lister article. par id unique ou selon des critères //
     public Cursor detailsArticle (SQLiteDatabase db, int id) {
         Cursor cursor = db.rawQuery(SELECT_ALL + " AND " + COLONNE_ID + " = ?", new String[]{ Integer.toString(id) });
         return cursor ;
@@ -184,6 +219,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor ;
     }
 
+    public Cursor afficherPlusRecent (SQLiteDatabase db) {
+        return afficherPlusRecent(db, 20);
+    }
+
+    public Cursor afficherPlusRecent (SQLiteDatabase db, int limite) {
+        Cursor cursor = db.rawQuery(SELECT_ALL + " ORDER BY " + COLONNE_DATE + " DESC LIMIT " + limite, null);
+        return cursor ;
+    }
+
+    // gestion des favoris //
     public void ajouterAuxFavoris (SQLiteDatabase db, int id) {
         ContentValues values = new ContentValues();
         values.put(COLONNE_FAVORIS, 1);
@@ -196,6 +241,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.update(TABLE_ARTICLE, values, COLONNE_ID + " = ?", new String[]{ Integer.toString(id) });
     }
 
+
+
+
+    /// À IMPLÉMENTER!!!!!!!!!!!!!!!!!!!!!!!!
+    // AJOUTER LES NOUVELLES MÉTHODES ICI AVANT DE FINALISER
+
+    // TODO: remplacer les utilisations par des appels à tousLesTypes, toutesLesCouleurs ou toutesLesCategories
     public List<String> listerValeursDistinctes(String nomtable) {
         List<String> liste= new ArrayList<String>();
 
@@ -214,30 +266,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
 
         return liste;
-    }
-
-    public void donnees (SQLiteDatabase db ) {
-        ContentValues values = new ContentValues();
-        values.put(COLONNE_COULEUR, "Rouge");
-        db.insert(TABLE_COULEUR, null, values);
-        values.put(COLONNE_COULEUR, "Jaune");
-        db.insert(TABLE_COULEUR, null, values);
-        values.put(COLONNE_COULEUR, "Blanche");
-        db.insert(TABLE_COULEUR, null, values);
-    }
-
-
-
-    /// À IMPLÉMENTER!!!!!!!!!!!!!!!!!!!!!!!!
-    // AJOUTER LES NOUVELLES MÉTHODES ICI AVANT DE FINALISER
-    public Cursor afficherPlusPorte (SQLiteDatabase db) {
-        Cursor cursor = db.rawQuery(SELECT_ALL, null);
-        return cursor ;
-    }
-
-    public Cursor afficherPlusRecent (SQLiteDatabase db) {
-        Cursor cursor = db.rawQuery(SELECT_ALL, null);
-        return cursor ;
     }
 
 }

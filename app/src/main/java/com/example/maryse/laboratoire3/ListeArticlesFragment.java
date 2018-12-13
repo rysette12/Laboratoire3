@@ -28,8 +28,8 @@ public class ListeArticlesFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v =  inflater.inflate(R.layout.listview_layout, null);
         ListView lvItems = (ListView) v.findViewById(R.id.listView);
-        ArticleCursorAdapter todoAdapter = new ArticleCursorAdapter(getContext(), articles);
-        lvItems.setAdapter(todoAdapter);
+        ArticleCursorAdapter adapter = new ArticleCursorAdapter(getContext(), articles);
+        lvItems.setAdapter(adapter);
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

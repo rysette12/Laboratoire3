@@ -61,10 +61,6 @@
             android:title="@string/navPlusRecent"
             android:icon="@drawable/ic_baseline_access_time_24px" />
 
-        <item android:id="@+id/navPlusPorte"
-            android:title="@string/navPlusPorte"
-            android:icon="@drawable/ic_baseline_done_24px" />
-
     </group>
 
     <group android:id="@+id/navGroup4" >

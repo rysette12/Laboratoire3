@@ -22,4 +22,11 @@
     <string name="navPlusPorte">Plus Portés</string>
     <string name="navReglages">Réglages</string>
 
+    <!-- Saisons -->
+    <string-array name="saisons">
+        <item>Printemps</item>
+        <item>Été</item>
+        <item>Automne</item>
+        <item>Hiver</item>
+    </string-array>
 </resources>
