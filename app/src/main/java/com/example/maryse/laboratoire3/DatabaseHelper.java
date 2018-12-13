@@ -22,6 +22,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLONNE_TYPE = "type";
     public static final String COLONNE_COULEUR = "couleur";
     public static final String COLONNE_CATEGORIE = "categorie";
+    public static final String COLONNE_IMAGE = "image";
     public static final String COLONNE_FAVORIS ="favoris";
     public static final String COLONNE_DATE = "derniereDate";
 
@@ -47,6 +48,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + TABLE_COULEUR + "." + COLONNE_COULEUR + ", "
                 + TABLE_COULEUR + "." + COLONNE_VALEUR + ", "
                 + TABLE_CATEGORIE + "." + COLONNE_CATEGORIE + ", "
+                + TABLE_ARTICLE + "." + COLONNE_IMAGE + ", "
                 + TABLE_ARTICLE + "." + COLONNE_FAVORIS + ", "
                 + TABLE_ARTICLE + "." + COLONNE_DATE
         + " FROM " + TABLE_ARTICLE + ", " + TABLE_TYPE + ", " + TABLE_COULEUR + ", " + TABLE_CATEGORIE
@@ -67,6 +69,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COLONNE_TYPE + " INTEGER REFERENCES " + TABLE_TYPE + "(" + COLONNE_ID + "), "
                 + COLONNE_COULEUR + " INTEGER REFERENCES " + TABLE_COULEUR + "(" + COLONNE_ID + "), "
                 + COLONNE_CATEGORIE + " INTEGER REFERENCES " + TABLE_CATEGORIE + "(" + COLONNE_ID + "), "
+                + COLONNE_IMAGE + " TEXT, "
                 + COLONNE_FAVORIS + " NUMERIC, "
                 + COLONNE_DATE + " DATE)";
         db.execSQL(sql);
@@ -143,6 +146,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLONNE_TYPE, idType(db, article.getType()) );
         values.put(COLONNE_COULEUR, idCouleur(db, article.getCouleur()));
         values.put(COLONNE_CATEGORIE, idCategorie(db, article.getCategorie()));
+        values.put(COLONNE_IMAGE, idCategorie(db, article.getImage()));
         db.insert(TABLE_ARTICLE, null, values);
     }
 
@@ -323,6 +327,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /// À IMPLÉMENTER!!!!!!!!!!!!!!!!!!!!!!!!
     // AJOUTER LES NOUVELLES MÉTHODES ICI AVANT DE FINALISER
+    public void retirerDuPanier (SQLiteDatabase db, String id) {
+
+    }
+
+    public void ajouterDuPanier (SQLiteDatabase db, String id) {
+
+    }
 
     // TODO: remplacer les utilisations par des appels à tousLesTypes, toutesLesCouleurs ou toutesLesCategories
     public List<String> listerValeursDistinctes(String nomtable) {

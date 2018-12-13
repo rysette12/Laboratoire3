@@ -32,6 +32,11 @@ public class Article {
         return DernierDatePortee;
     }
 
+    // TODO
+    public String getImage() {
+        return "";
+    }
+
     public void setType(String type) {
         this.type = type;
     }
