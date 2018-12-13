@@ -28,7 +28,7 @@ public class ArticleCursorAdapter extends CursorAdapter {
         TextView tvCouleur = (TextView) view.findViewById(R.id.textViewCouleurNom);
         final ImageButton ibFavoris = (ImageButton)  view.findViewById(R.id.imageButtonFavoris);
 
-        String description = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLONNE_DESCRIPTION));
+        String description = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLONNE_NOM));
         String idd = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLONNE_ID));
         String type = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLONNE_TYPE));
         String saison = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLONNE_SAISON));
