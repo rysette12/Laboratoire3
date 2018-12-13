@@ -39,7 +39,7 @@ public abstract class ListerActivity extends BaseActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        db = new DatabaseHelper(getApplicationContext());
+        db = new DatabaseHelper(this);
     }
 
     public class ListerPagerAdapter extends FragmentPagerAdapter {
