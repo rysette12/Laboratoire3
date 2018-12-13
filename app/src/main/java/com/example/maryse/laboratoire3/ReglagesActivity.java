@@ -1,17 +1,22 @@
 package com.example.maryse.laboratoire3;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
-import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import yuku.ambilwarna.AmbilWarnaDialog;
 
 public class ReglagesActivity extends BaseActivity {
 
@@ -58,12 +63,35 @@ public class ReglagesActivity extends BaseActivity {
         });
 
         // Couleurs
+        final Button choisirCouleur = (Button) findViewById(R.id.buttonChoisirCouleur);
+        final ArrayList<Integer> valeursCouleurs = db.toutesLesValeursCouleurs(db.getReadableDatabase());
+
+        choisirCouleur.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AmbilWarnaDialog dialog = new AmbilWarnaDialog(ReglagesActivity.this, ((ColorDrawable) choisirCouleur.getBackground()).getColor(),
+                        new AmbilWarnaDialog.OnAmbilWarnaListener() {
+                            @Override
+                            public void onCancel(AmbilWarnaDialog dialog) {
+
+                            }
+
+                            @Override
+                            public void onOk(AmbilWarnaDialog dialog, int color) {
+                                choisirCouleur.setBackgroundColor(color);
+                            }
+                        });
+
+                dialog.show();
+            }
+        });
+
         findViewById(R.id.buttonAjouterCouleur).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String couleur = ((TextView) v.findViewById(R.id.editTextReglagesCouleur)).getText().toString().trim();
                 if (couleur.length() > 0)
-                    db.ajouterCouleur(db.getWritableDatabase(), couleur);
+                    db.ajouterCouleur(db.getWritableDatabase(), couleur, ((ColorDrawable) choisirCouleur.getBackground()).getColor());
             }
         });
 
@@ -82,13 +110,29 @@ public class ReglagesActivity extends BaseActivity {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String couleur = spinnerCouleur.getSelectedItem().toString();
                         if (db.supprimerCouleur(db.getWritableDatabase(), couleur)) {
+                            int index = listeCouleurs.indexOf(couleur);
                             listeCouleurs.remove(couleur);
+                            valeursCouleurs.remove(valeursCouleurs.get(index));
                             ((ArrayAdapter<String>) spinnerCouleur.getAdapter()).notifyDataSetChanged();
+                            findViewById(R.id.textViewSupprimerCouleur).setBackgroundColor(valeursCouleurs.get(index > 0 ? index - 1 : 0));
                         } else
                             Toast.makeText(getApplicationContext(), "Erreur lors de la suppression. Avez-vous encore des articles utilisant cette couleur?", Toast.LENGTH_LONG).show();
                     }});
                 alert.setNegativeButton(android.R.string.no, null);
                 alert.show();
+            }
+        });
+
+        spinnerCouleur.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                System.out.println(valeursCouleurs.get(position));
+                findViewById(R.id.textViewSupprimerCouleur).setBackgroundColor(valeursCouleurs.get(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 

@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Color;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String TABLE_TYPE = "types";
     public static final String TABLE_COULEUR = "couleurs";
+    public static final String COLONNE_VALEUR = "valeur";
     public static final String TABLE_CATEGORIE = "categories";
 
     public static final String TABLE_UTILISATEUR ="utilisateurs";
@@ -43,6 +45,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + TABLE_ARTICLE + "." + COLONNE_SAISON + ", "
                 + TABLE_TYPE + "." + COLONNE_TYPE + ", "
                 + TABLE_COULEUR + "." + COLONNE_COULEUR + ", "
+                + TABLE_COULEUR + "." + COLONNE_VALEUR + ", "
                 + TABLE_CATEGORIE + "." + COLONNE_CATEGORIE + ", "
                 + TABLE_ARTICLE + "." + COLONNE_FAVORIS + ", "
                 + TABLE_ARTICLE + "." + COLONNE_DATE
@@ -52,7 +55,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + " AND " + TABLE_ARTICLE + "." + COLONNE_CATEGORIE + " = " + TABLE_CATEGORIE + "." + COLONNE_ID;
 
     public DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, 8);
+        super(context, DATABASE_NAME, null, 1);
     }
 
     @Override
@@ -75,7 +78,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         sql = "CREATE TABLE IF NOT EXISTS " + TABLE_COULEUR + " ("
                 + COLONNE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + COLONNE_COULEUR +" TEXT)";
+                + COLONNE_COULEUR + " TEXT, "
+                + COLONNE_VALEUR + " INTEGER)";
         db.execSQL(sql);
 
         sql = "CREATE TABLE IF NOT EXISTS " + TABLE_CATEGORIE + " ("
@@ -115,9 +119,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ajouterType(db, "T-shirt");
         ajouterType(db, "Pantalon");
         ajouterType(db, "Robe");
-        ajouterCouleur(db, "Rouge");
-        ajouterCouleur(db, "Jaune");
-        ajouterCouleur(db, "Blanc");
+        ajouterCouleur(db, "Rouge", (int) Color.RED);
+        ajouterCouleur(db, "Jaune", (int) Color.YELLOW);
+        ajouterCouleur(db, "Blanc", (int) Color.WHITE);
         ajouterCategorie(db, "Sports");
         ajouterCategorie(db, "Décontracté");
         ajouterCategorie(db, "Soiré");
@@ -149,9 +153,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE_TYPE, null, values);
     }
 
-    public void ajouterCouleur (SQLiteDatabase db, String couleur) {
+    public void ajouterCouleur (SQLiteDatabase db, String couleur, int valeur) {
         ContentValues values = new ContentValues();
         values.put(COLONNE_COULEUR, couleur);
+        values.put(COLONNE_VALEUR, valeur);
         db.insert(TABLE_COULEUR, null, values);
     }
 
@@ -163,25 +168,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public ArrayList<String> tousLesTypes (SQLiteDatabase db) {
         ArrayList<String> liste = new ArrayList<String>();
-
         Cursor cursor = db.rawQuery("SELECT " + COLONNE_TYPE + " FROM " + TABLE_TYPE, null);
         for (int i = 0; i < cursor.getCount(); i++) {
             cursor.moveToPosition(i);
             liste.add(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLONNE_TYPE)));
         }
-
         return liste;
     }
 
-    public ArrayList<String> toutesLesCouleurs (SQLiteDatabase db ) {
+    public ArrayList<String> toutesLesCouleurs (SQLiteDatabase db) {
         ArrayList<String> liste = new ArrayList<String>();
-
         Cursor cursor = db.rawQuery("SELECT " + COLONNE_COULEUR + " FROM " + TABLE_COULEUR, null);
         for (int i = 0; i < cursor.getCount(); i++) {
             cursor.moveToPosition(i);
             liste.add(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLONNE_COULEUR)));
         }
+        return liste;
+    }
 
+    public ArrayList<Integer> toutesLesValeursCouleurs (SQLiteDatabase db) {
+        ArrayList<Integer> liste = new ArrayList<Integer>();
+        Cursor cursor = db.rawQuery("SELECT " + COLONNE_VALEUR + " FROM " + TABLE_COULEUR, null);
+        for (int i = 0; i < cursor.getCount(); i++) {
+            cursor.moveToPosition(i);
+            liste.add(cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLONNE_VALEUR)));
+        }
         return liste;
     }
 
