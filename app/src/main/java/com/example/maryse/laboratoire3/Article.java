@@ -57,7 +57,7 @@ public class Article {
     }
 
     public Article(String type, String couleur, String saison, String categorie,
-        String nomArticle, String dateAchat, String dernierDatePortee) {
+        String nomArticle, String dernierDatePortee) {
         this.type = type;
         this.couleur = couleur;
         this.saison = saison;

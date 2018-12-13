@@ -144,6 +144,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE_CATEGORIE, null, values);
     }
 
+    //modifier
+    public void modifierArticle(SQLiteDatabase db, Article article, int id){
+        String strFilter = "_id=" + id;
+        ContentValues values = new ContentValues();
+        values.put(COLONNE_DESCRIPTION, article.getNomArticle());
+        values.put(COLONNE_TYPE, article.getType());
+        values.put(COLONNE_SAISON, article.getSaison());
+        values.put(COLONNE_CATEGORIE, article.getCategorie());
+        values.put(COLONNE_DATE, article.getDernierDatePortee());
+        values.put(COLONNE_DATE, article.getDernierDatePortee());
+        values.put(COLONNE_DATE, article.getDernierDatePortee());
+        db.update(TABLE_ARTICLE,values, strFilter, null);
+    }
+
     // lister les types, couleurs, catégories //
     public Cursor tousLesTypes (SQLiteDatabase db) {
         Cursor cursor = db.rawQuery("SELECT " + COLONNE_TYPE + " FROM " + TABLE_TYPE, null);

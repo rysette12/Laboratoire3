@@ -1,4 +1,5 @@
 package com.example.maryse.laboratoire3;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -10,10 +11,7 @@ public class ActivityDetails extends BaseActivity {
         protected TextView articleCategorie;
         protected TextView articleVetement;
         protected TextView articleCouleur;
-        protected TextView articleMateriel;
         protected TextView articleSaison;
-        protected TextView officePhone;
-        protected TextView cellPhone;
         protected DatabaseHelper data;
         protected int articleId;
         protected Cursor cursor;
@@ -22,22 +20,20 @@ public class ActivityDetails extends BaseActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.textview_layout);
+            setContentView(R.layout.activity_detail);
             articleId = getIntent().getIntExtra("ARTICLE_ID", 0);
             db = data.getWritableDatabase();
             cursor = data.detailsArticle(db,articleId);
             if (cursor.getCount() == 1)
             { cursor.moveToFirst();
                 articleName = (TextView) findViewById(R.id.textViewN);
-                articleName.setText(cursor.getString(cursor.getColumnIndex("nom")));
+                articleName.setText(cursor.getString(cursor.getColumnIndex("description")));
                 articleVetement = (TextView)findViewById(R.id.textViewV);
-                articleVetement.setText(cursor.getString(cursor.getColumnIndex("vetement")));
+                articleVetement.setText(cursor.getString(cursor.getColumnIndex("type")));
                 articleCategorie= (TextView)findViewById(R.id.textViewCa);
                 articleCategorie.setText(cursor.getString(cursor.getColumnIndex("categorie")));
                 articleCouleur = (TextView)findViewById(R.id.textViewCo);
                 articleCouleur.setText(cursor.getString(cursor.getColumnIndex("couleur")));
-                articleMateriel = (TextView)findViewById(R.id.textViewM);
-                articleMateriel.setText(cursor.getString(cursor.getColumnIndex("materiel")));
                 articleSaison = (TextView)findViewById(R.id.textViewSa);
                 articleSaison.setText(cursor.getString(cursor.getColumnIndex("saison")));
             }
@@ -46,9 +42,9 @@ public class ActivityDetails extends BaseActivity {
                 @Override
                 public void onClick(View v) {
                     db=  data.getWritableDatabase();
-                   // Intent intent = new Intent( EdittActivity.class);
+                 //  Intent i = new Intent(this,EditActivity.class);
                     cursor= data.detailsArticle(db,articleId);
-                    //intent.putExtra("ARTICLE_ID", cursor.getInt(cursor.getColumnIndex("_id")));
+                   // i.putExtra("", cursor.getInt(cursor.getColumnIndex("_id")));
                     //startActivity(intent);
 
                 }
