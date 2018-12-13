@@ -19,11 +19,24 @@
 
         <ImageButton
             android:id="@+id/imageButtonFavoris"
-            android:layout_width="50dp"
+            android:layout_width="45dp"
             android:layout_height="50dp"
             android:layout_alignEnd="@+id/imageViewArticle"
             android:background="@android:color/transparent"
             app:srcCompat="@drawable/ic_baseline_favorite_border_24px" />
+
+        <ImageButton
+            android:id="@+id/imageButtonPanier"
+            android:layout_width="30dp"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/imageButtonFavoris"
+            android:background="@android:color/transparent"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:scaleType="fitXY"
+            android:tint="@android:color/holo_green_dark"
+            app:srcCompat="@drawable/ic_baseline_add_24px" />
     </RelativeLayout>
 
     <LinearLayout
@@ -48,19 +61,19 @@
                 android:textColor="@android:color/black" />
 
             <TextView
-                android:id="@+id/textViewType"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="Type"
-                android:textColor="@android:color/black" />
-
-            <TextView
                 android:id="@+id/textViewSaison"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="Saison"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/textViewType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="Type"
                 android:textColor="@android:color/black" />
 
             <TextView
