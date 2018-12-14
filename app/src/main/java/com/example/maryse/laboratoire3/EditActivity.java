@@ -1,6 +1,7 @@
 package com.example.maryse.laboratoire3;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -112,6 +113,8 @@ public class EditActivity extends BaseActivity {
                                               dateAchat = (((EditText) findViewById(R.id.editTextDate)).getText()).toString();
                                               Article article = new Article(type,couleur,saison,categorie,nom,dateAchat);
                                               myDb.modifierArticle(myDb.getWritableDatabase(),article,articleId);
+                                              Intent intent = new Intent(EditActivity.this,ListeArticlesFragment.class);
+                                              startActivity(intent);
                                           }
                                       }
         );

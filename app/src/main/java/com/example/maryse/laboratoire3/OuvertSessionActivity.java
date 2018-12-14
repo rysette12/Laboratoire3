@@ -1,5 +1,6 @@
 package com.example.maryse.laboratoire3;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -25,9 +26,10 @@ public class OuvertSessionActivity extends BaseActivity {
             public void onClick(View v) {
             Utilisateur utilisateur = myDb.Verifier(myDb.getWritableDatabase(),new Utilisateur(null, null,editTextPass.getText().toString(), editTextCourriel.getText().toString()));
             if (utilisateur != null) {
-
+                Intent intent = new Intent( OuvertSessionActivity.this, ListeArticlesFragment.class);
+                startActivity(intent);
             } else {
-                
+
                 }
             }
         });

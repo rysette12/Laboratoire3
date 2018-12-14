@@ -107,6 +107,8 @@ public class AjouterActivity extends BaseActivity {
                                               dateAchat = (((EditText) findViewById(R.id.editTextDate)).getText()).toString();
                                               Article article = new Article(type,couleur,saison,categorie,nom,dateAchat);
                                               myDb.ajouterArticle(myDb.getWritableDatabase(),article);
+                                              Intent intent = new Intent(AjouterActivity.this,ListeArticlesFragment.class);
+                                              startActivity(intent);
                                           }
                                       }
         );

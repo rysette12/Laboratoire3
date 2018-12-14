@@ -1,5 +1,6 @@
 package com.example.maryse.laboratoire3;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -33,6 +34,8 @@ public class EnresgistrerActivity extends BaseActivity {
                 String pass = editTextPass.getText().toString();
                 Utilisateur utilisateur = new Utilisateur(nom, prenom, pass,courriel);
                 myDb.ajouterUtilisateur(myDb.getWritableDatabase(),utilisateur);
+                Intent intent = new Intent(EnresgistrerActivity.this, OuvertSessionActivity.class);
+                startActivity(intent);
             }
         });
         bouttonEffacer.setOnClickListener(new View.OnClickListener() {
