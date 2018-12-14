@@ -16,8 +16,8 @@ public class ListerChoix extends  BaseActivity{
         setContentView(R.layout.activity_list_cart);
         final Cursor articles = db.listerCart(db.getReadableDatabase());
         ListView lvItems = (ListView) findViewById(R.id.listView);
-        ArticleCursorAdapter todoAdapter = new ArticleCursorAdapter(this, articles);
-        lvItems.setAdapter(todoAdapter);
+        ArticleCursorAdapter adapter = new ArticleCursorAdapter(this, articles);
+        lvItems.setAdapter(adapter);
         creerGenre = (Button) findViewById(R.id.creer_Ensemble);
         creerGenre.setOnClickListener(new View.OnClickListener() {
             @Override

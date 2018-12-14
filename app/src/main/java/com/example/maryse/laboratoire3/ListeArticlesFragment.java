@@ -30,16 +30,17 @@ public class ListeArticlesFragment extends Fragment {
         ListView lvItems = (ListView) v.findViewById(R.id.listView);
         ArticleCursorAdapter adapter = new ArticleCursorAdapter(getContext(), articles);
         lvItems.setAdapter(adapter);
+
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // TODO
-                Intent i = new Intent(getContext(), MainActivity.class);//DetailsActivity.class);
+                Intent i = new Intent(getContext(), DetailsActivity.class);
                 articles.moveToPosition(position);
                 i.putExtra(BaseActivity.ARTICLE_ID_KEY, articles.getColumnIndexOrThrow(DatabaseHelper.COLONNE_ID));
                 startActivity(i);
             }
         });
+
         return v;
     }
 }

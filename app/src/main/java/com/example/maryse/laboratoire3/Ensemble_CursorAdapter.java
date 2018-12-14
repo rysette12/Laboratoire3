@@ -23,7 +23,7 @@ public class Ensemble_CursorAdapter extends BaseActivity  {
         Cursor cursor = db.listerEnsemble(db.getReadableDatabase());
         for (int i =0; i<cursor.getCount();i++){
             map.put("NomEnsemble","Ensemble"+cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLONNE_NUMERO_ENSEMBLE)));
-            map.put("image",cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLONNE_DESCRIPTION)));
+            map.put("image",cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLONNE_NOM)));
             listItem.add(map);
         }
 

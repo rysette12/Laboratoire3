@@ -16,11 +16,12 @@
     <string name="navEnsembles">Mes Ensembles</string>
     <string name="navLister">Lister par</string>
     <string name="navTous">Tous</string>
-
     <string name="navFavoris">Mes Favoris</string>
     <string name="navPlusRecent">Plus Récents</string>
     <string name="navPlusPorte">Plus Portés</string>
+
     <string name="navReglages">Réglages</string>
+    <string name="navStyle">Règles de style</string>
 
     <!-- Saisons -->
     <string-array name="saisons">

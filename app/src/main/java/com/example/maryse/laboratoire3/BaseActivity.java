@@ -99,6 +99,9 @@ public abstract class BaseActivity extends AppCompatActivity {
                     case R.id.navReglages:
                         i = new Intent(getApplicationContext(), ReglagesActivity.class);
                         break;
+                    case R.id.navStyle:
+                        i = new Intent(getApplicationContext(), ReglagesActivity.class);
+                        break;
                     default:
                         i = new Intent(getApplicationContext(), MainActivity.class);
                 }

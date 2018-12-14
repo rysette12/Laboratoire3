@@ -12,7 +12,6 @@ public class ListerParTypeActivity extends ListerActivity {
 
         for (int i = 0; i < tabTitles.size(); i++) {
             Cursor c = db.listerParType(db.getReadableDatabase(), tabTitles.get(i));
-            System.out.println(i + " " + c.getCount());
             fragments.add(ListeArticlesFragment.newInstance(c));
         }
 

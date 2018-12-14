@@ -126,7 +126,6 @@ public class ReglagesActivity extends BaseActivity {
         spinnerCouleur.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println(valeursCouleurs.get(position));
                 findViewById(R.id.textViewSupprimerCouleur).setBackgroundColor(valeursCouleurs.get(position));
             }
 

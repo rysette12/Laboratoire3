@@ -15,6 +15,7 @@
             android:id="@+id/imageViewArticle"
             android:layout_width="match_parent"
             android:layout_height="150dp"
+            android:scaleType="centerCrop"
             app:srcCompat="@drawable/no_image_icon" />
 
         <ImageButton
@@ -103,7 +104,8 @@
                 android:id="@+id/textViewCouleurNom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:gravity="center" />
         </LinearLayout>
     </LinearLayout>
 

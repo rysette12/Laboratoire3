@@ -69,6 +69,10 @@
             android:title="@string/navReglages"
             android:icon="@drawable/ic_baseline_settings_20px" />
 
+        <item android:id="@+id/navStyle"
+            android:title="@string/navStyle"
+            android:icon="@drawable/ic_clothes" />
+
     </group>
 
 </menu>

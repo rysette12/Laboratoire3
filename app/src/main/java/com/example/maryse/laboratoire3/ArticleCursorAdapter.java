@@ -38,39 +38,42 @@ public class ArticleCursorAdapter extends CursorAdapter {
         TextView tvNom = (TextView) view.findViewById(R.id.textViewDescription);
         TextView tvSaison = (TextView) view.findViewById(R.id.textViewSaison);
         TextView tvType = (TextView) view.findViewById(R.id.textViewType);
+        TextView tvCategorie = (TextView) view.findViewById(R.id.textViewCategorie);
         TextView tvCouleurNom = (TextView) view.findViewById(R.id.textViewCouleurNom);
         TextView tvCouleur = (TextView) view.findViewById(R.id.textViewCouleur);
         ImageView ivImage = (ImageView) view.findViewById(R.id.imageViewArticle);
-
-        TextView tvCategorie = (TextView) view.findViewById(R.id.textViewCategorie);
-
-        final ImageButton ibFavoris = (ImageButton)  view.findViewById(R.id.imageButtonFavoris);
+        final ImageButton ibFavoris = (ImageButton) view.findViewById(R.id.imageButtonFavoris);
 
         String nom = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLONNE_NOM));
         final String id = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLONNE_ID));
-        String type = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLONNE_TYPE));
         String saison = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLONNE_SAISON));
+        String type = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLONNE_TYPE));
         String categorie = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLONNE_CATEGORIE));
         String couleurNom = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLONNE_COULEUR));
         int couleur = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLONNE_VALEUR));
         String image = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLONNE_IMAGE));
         int favoris = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLONNE_FAVORIS));
 
-        tvType.setText(type);
+        tvNom.setText(nom);
         tvSaison.setText(saison);
+        tvType.setText(type);
         tvCategorie.setText(categorie);
-        tvCouleur.setText(couleur);
+        tvCouleurNom.setText(couleurNom);
         tvCouleur.setBackgroundColor(couleur);
-        File imgFile = new  File(image);
-        if(imgFile.exists()){
-            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-            ivImage.setImageBitmap(myBitmap);
+
+        if (image != null) {
+            File imgFile = new File(image);
+            if(imgFile.exists()){
+                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                ivImage.setImageBitmap(myBitmap);
+            }
         }
 
         if (favoris > 0)
             ibFavoris.setImageResource(R.drawable.ic_baseline_favorite_24px);
         else
             ibFavoris.setImageResource(R.drawable.ic_baseline_favorite_border_24px);
+        ibFavoris.setFocusable(false);
         ibFavoris.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,6 +93,7 @@ public class ArticleCursorAdapter extends CursorAdapter {
         });
 
         ImageButton ibPanier = (ImageButton) view.findViewById(R.id.imageButtonPanier);
+        ibPanier.setFocusable(false);
         if (modeDelete) {
             ibPanier.setImageResource(R.drawable.ic_baseline_remove_24px);
             int rouge = context.getColor(android.R.color.holo_red_dark);

@@ -23,6 +23,7 @@
         </activity>
         <activity android:name=".ListerToutActivity"/>
         <activity android:name=".AjouterActivity"/>
+        <activity android:name=".DetailsActivity"/>
         <activity android:name=".ListerParSaisonActivity"
             android:theme="@style/AppThemeNoActionBar"/>
         <activity android:name=".ListerParTypeActivity"

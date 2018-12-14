@@ -63,7 +63,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + " AND " + TABLE_ARTICLE + "." + COLONNE_CATEGORIE + " = " + TABLE_CATEGORIE + "." + COLONNE_ID;
 
     public DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, 1);
+        super(context, DATABASE_NAME, null, 3);
     }
 
     @Override
@@ -153,25 +153,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void ajouterArticle (SQLiteDatabase db, Article article) {
         ContentValues values = new ContentValues();
-        values.put(COLONNE_NOM, article.getNomArticle());
+        values.put(COLONNE_NOM, article.getNom());
         values.put(COLONNE_SAISON, article.getSaison());
         values.put(COLONNE_TYPE, idType(db, article.getType()) );
         values.put(COLONNE_COULEUR, idCouleur(db, article.getCouleur()));
         values.put(COLONNE_CATEGORIE, idCategorie(db, article.getCategorie()));
-        values.put(COLONNE_IMAGE, idCategorie(db, article.getImage()));
+        values.put(COLONNE_IMAGE, article.getImage());
+        values.put(COLONNE_DATE, article.getDate());
         db.insert(TABLE_ARTICLE, null, values);
     }
 
     public void modifierArticle(SQLiteDatabase db, Article article, int id){
         String strFilter = "_id=" + id;
         ContentValues values = new ContentValues();
-        values.put(COLONNE_NOM, article.getNomArticle());
+        values.put(COLONNE_NOM, article.getNom());
         values.put(COLONNE_SAISON, article.getSaison());
         values.put(COLONNE_TYPE, idType(db, article.getType()) );
         values.put(COLONNE_COULEUR, idCouleur(db, article.getCouleur()));
         values.put(COLONNE_CATEGORIE, idCategorie(db, article.getCategorie()));
-        values.put(COLONNE_DATE, article.getDernierDatePortee());
+        values.put(COLONNE_IMAGE, article.getImage());
+        values.put(COLONNE_DATE, article.getDate());
         db.update(TABLE_ARTICLE,values, strFilter, null);
+    }
+
+    public void supprimerArticle (SQLiteDatabase db, int id) {
+        db.delete(TABLE_ARTICLE, COLONNE_ID + " = ?", new String[]{ Integer.toString(id) });
     }
 
     public void ajouterUtilisateur (SQLiteDatabase db, Utilisateur utilisateur) {
@@ -179,7 +185,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLONNE_NOM, utilisateur.getNom());
         values.put(COLONNE_PRENOM, utilisateur.getPrenom());
         values.put(COLONNE_PASSWORD, utilisateur.getPassword() );
-        values.put(COLONNE_COULEUR,utilisateur.getAdresseCouriel());
+        values.put(COLONNE_COULEUR, utilisateur.getAdresseCouriel());
         db.insert(TABLE_UTILISATEUR, null, values);
     }
 
@@ -194,7 +200,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void supprimerEnsemble (SQLiteDatabase db, int ensemble ) {
-        db.delete(TABLE_ENSEMBLE, COLONNE_NUMERO_ENSEMBLE + "=" + ensemble, null);
+        db.delete(TABLE_ENSEMBLE, COLONNE_NUMERO_ENSEMBLE + " = ?", new String[]{ Integer.toString(ensemble) });
     }
 
     public Cursor listerEnsemble (SQLiteDatabase db) {
@@ -211,7 +217,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor ;
     }
 
-    public void ajouterAuPanier(SQLiteDatabase db , int id ) {
+    public void ajouterAuPanier(SQLiteDatabase db , String id ) {
         ContentValues values = new ContentValues();
         values.put(COLONNE_NUMERO_ARTICLE, id );
         db.insert(TABLE_CART, null, values);
@@ -234,7 +240,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor ;
     }
 
-    //Verifier
+    // Verifier
     public Utilisateur Verifier(SQLiteDatabase db,Utilisateur utilisateur) {
         Cursor cursor = db.rawQuery(SELECT_ALL + " AND " + TABLE_UTILISATEUR + "." + COLONNE_ADRESSE+ " = ?",
                 new String[]{ utilisateur.getAdresseCouriel() });
@@ -298,32 +304,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public ArrayList<String> toutesLesCategories (SQLiteDatabase db) {
         ArrayList<String> liste = new ArrayList<String>();
-
         Cursor cursor = db.rawQuery("SELECT " + COLONNE_CATEGORIE + " FROM " + TABLE_CATEGORIE, null);
         for (int i = 0; i < cursor.getCount(); i++) {
             cursor.moveToPosition(i);
             liste.add(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLONNE_CATEGORIE)));
         }
-
         return liste;
     }
 
-    public String idType (SQLiteDatabase db, String type) {
-        Cursor cursor = db.rawQuery("SELECT " + COLONNE_ID + " FROM " + TABLE_CATEGORIE + " WHERE " + COLONNE_TYPE + " = ? ",
-                new String[]{type});
-        return cursor.getString(cursor.getColumnIndex(COLONNE_ID));
+    public int idType (SQLiteDatabase db, String type) {
+        Cursor cursor = db.rawQuery("SELECT " + COLONNE_ID + " FROM " + TABLE_TYPE + " WHERE " + COLONNE_TYPE + " = ?",
+                new String[]{ type });
+        cursor.moveToFirst();
+        return cursor.getInt(cursor.getColumnIndex(COLONNE_ID));
     }
 
-    public String idCouleur (SQLiteDatabase db, String couleur ) {
-        Cursor cursor = db.rawQuery("SELECT " + COLONNE_ID + " FROM " + TABLE_TYPE + " WHERE " + COLONNE_COULEUR + " = ? ",
-                new String[]{couleur});
-        return cursor.getString(cursor.getColumnIndex(COLONNE_ID));
+    public int idCouleur (SQLiteDatabase db, String couleur ) {
+        Cursor cursor = db.rawQuery("SELECT " + COLONNE_ID + " FROM " + TABLE_COULEUR + " WHERE " + COLONNE_COULEUR + " = ?",
+                new String[]{ couleur });
+        cursor.moveToFirst();
+        return cursor.getInt(cursor.getColumnIndex(COLONNE_ID));
     }
 
-    public String idCategorie (SQLiteDatabase db, String categorie) {
-        Cursor cursor = db.rawQuery("SELECT " + COLONNE_ID + " FROM " + TABLE_CATEGORIE + " WHERE " + COLONNE_CATEGORIE + " = ? ",
-                new String[]{categorie});
-        return cursor.getString(cursor.getColumnIndex(COLONNE_ID));
+    public int idCategorie (SQLiteDatabase db, String categorie) {
+        Cursor cursor = db.rawQuery("SELECT " + COLONNE_ID + " FROM " + TABLE_CATEGORIE + " WHERE " + COLONNE_CATEGORIE + " = ?",
+                new String[]{ categorie });
+        cursor.moveToFirst();
+        return cursor.getInt(cursor.getColumnIndex(COLONNE_ID));
     }
 
     public boolean supprimerType (SQLiteDatabase db, String type) {
@@ -358,42 +365,42 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // lister article. par id unique ou selon des critères //
     public Cursor detailsArticle (SQLiteDatabase db, int id) {
-        Cursor cursor = db.rawQuery(SELECT_ALL + " AND " + COLONNE_ID + " = ?", new String[]{ Integer.toString(id) });
-        return cursor ;
+        Cursor cursor = db.rawQuery(SELECT_ALL + " AND " + TABLE_ARTICLE + "." + COLONNE_ID + " = ?", new String[]{ Integer.toString(id) });
+        return cursor;
     }
 
     public Cursor listerTout (SQLiteDatabase db) {
         Cursor cursor = db.rawQuery(SELECT_ALL, null);
-        return cursor ;
+        return cursor;
     }
 
     public Cursor listerParSaison (SQLiteDatabase db, String saison) {
         Cursor cursor = db.rawQuery(SELECT_ALL + " AND " + COLONNE_SAISON + " = ?", new String[]{ saison });
-        return cursor ;
+        return cursor;
     }
 
     public Cursor listerParType (SQLiteDatabase db, String type) {
         Cursor cursor = db.rawQuery(SELECT_ALL + " AND " + TABLE_TYPE + "." + COLONNE_TYPE + " = ?",
                 new String[]{ type });
-        return cursor ;
+        return cursor;
     }
 
     public Cursor listerParCouleur (SQLiteDatabase db, String couleur) {
         Cursor cursor = db.rawQuery(SELECT_ALL + " AND " + TABLE_COULEUR + "." + COLONNE_COULEUR + " = ?",
                 new String[]{ couleur });
-        return cursor ;
+        return cursor;
     }
 
     public Cursor listerParCategorie (SQLiteDatabase db, String categorie) {
         Cursor cursor = db.rawQuery(SELECT_ALL + " AND " + TABLE_CATEGORIE + "." + COLONNE_CATEGORIE + " = ?",
                 new String[]{ categorie });
-        return cursor ;
+        return cursor;
     }
 
     public Cursor listerArticlesFavoris (SQLiteDatabase db) {
-        Cursor cursor = db.rawQuery(SELECT_ALL + " AND " + COLONNE_FAVORIS + " = ?",
+        Cursor cursor = db.rawQuery(SELECT_ALL + " AND " + TABLE_ARTICLE + "." + COLONNE_FAVORIS + " = ?",
                 new String[]{ Integer.toString(1) });
-        return cursor ;
+        return cursor;
     }
 
     public Cursor afficherPlusRecent (SQLiteDatabase db) {
@@ -401,8 +408,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Cursor afficherPlusRecent (SQLiteDatabase db, int limite) {
-        Cursor cursor = db.rawQuery(SELECT_ALL + " ORDER BY " + COLONNE_DATE + " DESC LIMIT " + limite, null);
-        return cursor ;
+        Cursor cursor = db.rawQuery(SELECT_ALL + " ORDER BY " + TABLE_ARTICLE + "." + COLONNE_DATE + " DESC LIMIT " + limite, null);
+        return cursor;
     }
 
     // gestion des favoris //
@@ -416,33 +423,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COLONNE_FAVORIS, 0);
         db.update(TABLE_ARTICLE, values, COLONNE_ID + " = ?", new String[]{ Integer.toString(id) });
-    }
-
-
-
-
-    /// À IMPLÉMENTER!!!!!!!!!!!!!!!!!!!!!!!!
-    // AJOUTER LES NOUVELLES MÉTHODES ICI AVANT DE FINALISER
-
-    // TODO: remplacer les utilisations par des appels à tousLesTypes, toutesLesCouleurs ou toutesLesCategories
-    public List<String> listerValeursDistinctes(String nomtable) {
-        List<String> liste= new ArrayList<String>();
-
-        String selectQuery = "SELECT distinct * FROM " + nomtable;
-
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-
-        if (cursor.moveToFirst()) {
-            do {
-                liste.add(cursor.getString(1));
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-        db.close();
-
-        return liste;
     }
 
 }
