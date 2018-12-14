@@ -143,19 +143,45 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLONNE_CATEGORIE, categorie);
         db.insert(TABLE_CATEGORIE, null, values);
     }
+    public void ajouterUtilisateur (SQLiteDatabase db, Utilisateur utilisateur) {
+        ContentValues values = new ContentValues();
+        values.put(COLONNE_DESCRIPTION, utilisateur.getNom());
+        values.put(COLONNE_PRENOM, utilisateur.getPrenom());
+        values.put(COLONNE_PASSWORD, utilisateur.getPassword() );
+        values.put(COLONNE_COULEUR,utilisateur.getAdresseCouriel());
+        db.insert(TABLE_UTILISATEUR, null, values);
+    }
+
 
     //modifier
     public void modifierArticle(SQLiteDatabase db, Article article, int id){
         String strFilter = "_id=" + id;
         ContentValues values = new ContentValues();
         values.put(COLONNE_DESCRIPTION, article.getNomArticle());
-        values.put(COLONNE_TYPE, article.getType());
         values.put(COLONNE_SAISON, article.getSaison());
-        values.put(COLONNE_CATEGORIE, article.getCategorie());
-        values.put(COLONNE_DATE, article.getDernierDatePortee());
-        values.put(COLONNE_DATE, article.getDernierDatePortee());
+        values.put(COLONNE_TYPE, idType(db, article.getType()) );
+        values.put(COLONNE_COULEUR, idCouleur(db, article.getCouleur()));
+        values.put(COLONNE_CATEGORIE, idCategorie(db, article.getCategorie()));
         values.put(COLONNE_DATE, article.getDernierDatePortee());
         db.update(TABLE_ARTICLE,values, strFilter, null);
+    }
+
+    //Verifier
+    public Utilisateur Verifier(SQLiteDatabase db,Utilisateur utilisateur) {
+        Cursor cursor = db.rawQuery(SELECT_ALL + " AND " + TABLE_UTILISATEUR + "." + COLONNE_ADRESSE+ " = ?",
+                new String[]{ utilisateur.getAdresseCouriel() });
+
+        if (cursor != null && cursor.moveToFirst()&& cursor.getCount()>0) {
+
+           Utilisateur utilisateur11 = new Utilisateur(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3));
+
+
+            if (utilisateur.getPassword().equalsIgnoreCase(utilisateur11.getPassword())) {
+                return utilisateur11;
+            }
+        }
+
+        return null;
     }
 
     // lister les types, couleurs, catégories //

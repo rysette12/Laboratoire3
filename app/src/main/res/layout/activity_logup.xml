@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_alignWithParentIfMissing="true"
+    android:baselineAligned="false"
     android:orientation="vertical">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,13 +13,11 @@
             android:id="@+id/textViewTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ajouter"
+            android:text="Creer une nouvelle session"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 
     </LinearLayout>
-
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -48,10 +43,6 @@
                 android:ems="10"
                 android:inputType="textPersonName" />
         </LinearLayout>
-
-
-
-
     </LinearLayout>
 
     <LinearLayout
@@ -64,22 +55,22 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textViewImage"
-                android:layout_width="wrap_content"
-                android:layout_height="46dp"
+                android:id="@+id/textViewPrenom"
+                android:layout_width="103dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Image  :" />
+                android:text="Prenom :" />
 
             <EditText
-                android:id="@+id/editImage"
+                android:id="@+id/editTextPrenom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="textPersonName" />
         </LinearLayout>
-
     </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -91,137 +82,46 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textViewSaison"
-                android:layout_width="wrap_content"
-                android:layout_height="46dp"
+                android:id="@+id/textViewCourriel"
+                android:layout_width="103dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Saisom  :" />
+                android:text="Courriel :" />
 
             <EditText
-                android:id="@+id/editSaison"
+                android:id="@+id/editTextCouriel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="textPersonName" />
+                android:inputType="textEmailAddress"/>
         </LinearLayout>
-
     </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textViewType"
-                android:layout_width="169dp"
+                android:id="@+id/textViewPass"
+                android:layout_width="103dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Type:" />
+                android:text="Mot de passe :" />
 
-            <Spinner
-                android:id="@+id/spinnerType"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textViewCategorie"
-                android:layout_width="169dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Categorie:"
-                tools:text="Categorie:" />
-
-            <Spinner
-                android:id="@+id/spinnerCategorie"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textViewCouleur"
-                android:layout_width="169dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Couleur  :" />
-
-            <Spinner
-                android:id="@+id/spinnerCouleur"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-
-            <TextView
-                android:id="@+id/textViewDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Date :" />
             <EditText
-                android:id="@+id/editTextDate"
-                android:layout_width="wrap_content"
+                android:id="@+id/editTextPass"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:ems="10" />
-
-            <Button
-                android:id="@+id/buttonDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Set Date" />
+                android:ems="10"
+                android:inputType="textPassword" />
         </LinearLayout>
-
     </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -246,7 +146,6 @@
                 android:layout_weight="1"
                 android:text="Effacer" />
         </LinearLayout>
-
     </LinearLayout>
 
 </LinearLayout>

@@ -1,6 +1,7 @@
 package com.example.maryse.laboratoire3;
 
 import android.app.DatePickerDialog;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,6 +27,7 @@ public class EditActivity extends BaseActivity {
     private Spinner spinnerCouleur, spinnerType, spinnerCategorie;
     private String couleur, categorie, type,dateAchat,saison,nom;
     protected int articleId;
+    private Cursor articles;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +44,7 @@ public class EditActivity extends BaseActivity {
         btnDate = findViewById(R.id.buttonDate);
         ((TextView) findViewById(R.id.textViewTitle)).setText("Modifier");
         btnAjouter.setText("Modifier");
-        articleId = getIntent().getIntExtra("ARTICLE_ID", 0);
+        articleId = getIntent().getIntExtra(BaseActivity.ARTICLE_ID_KEY, articles.getColumnIndexOrThrow(DatabaseHelper.COLONNE_ID));
 
         //Datepicker
         Calendar cal = Calendar.getInstance();
@@ -140,5 +142,6 @@ public class EditActivity extends BaseActivity {
 
         sp.setAdapter(dataAdapter);
     }
+
 }
 
