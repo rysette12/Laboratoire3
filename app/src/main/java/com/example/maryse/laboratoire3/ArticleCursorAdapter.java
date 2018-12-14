@@ -102,7 +102,7 @@ public class ArticleCursorAdapter extends CursorAdapter {
                 if (modeDelete) {
                     bd.retirerDuPanier(bd.getWritableDatabase(), id);
                 } else
-                    bd.ajouterDuPanier(bd.getWritableDatabase(), id);
+                    bd.ajouterAuPanier(bd.getWritableDatabase(), id);
             }
         });
     }

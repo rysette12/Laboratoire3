@@ -31,6 +31,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLONNE_VALEUR = "valeur";
     public static final String TABLE_CATEGORIE = "categories";
 
+    public static final String TABLE_CART ="choix_utilisateur";
+    public static final String COLONNE_NUMERO_ARTICLE ="numero_article";
+    public int maxEnsemble;
+    public static final String TABLE_ENSEMBLE ="choix_utilisateur";
+    public static final String COLONNE_NUMERO_ENSEMBLE="numero_ensemble";
+
     public static final String TABLE_UTILISATEUR ="utilisateurs";
     public static final String COLONNE_PASSWORD = "password";
     public static final String COLONNE_PRENOM ="prenom";
@@ -90,6 +96,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COLONNE_CATEGORIE +" TEXT)";
         db.execSQL(sql);
 
+        sql = "CREATE TABLE IF NOT EXISTS " + TABLE_ENSEMBLE + " ("
+                + COLONNE_ID +" INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COLONNE_NUMERO_ENSEMBLE +"INTEGER,"
+                + COLONNE_NUMERO_ARTICLE + " INTEGER REFERENCES " + TABLE_ARTICLE + "(" + COLONNE_ID + "))";
+        db.execSQL(sql);
+
         sql = "CREATE TABLE IF NOT EXISTS " + TABLE_UTILISATEUR + " ("
                 + COLONNE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COLONNE_NOM + " TEXT, "
@@ -107,6 +119,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TYPE );
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_COULEUR );
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORIE );
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CART);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_UTILISATEUR );
         onCreate(db);
     }
@@ -138,7 +151,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE_ARTICLE, null, values);
     }
 
-    // Ajouts //
     public void ajouterArticle (SQLiteDatabase db, Article article) {
         ContentValues values = new ContentValues();
         values.put(COLONNE_NOM, article.getNomArticle());
@@ -148,6 +160,90 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLONNE_CATEGORIE, idCategorie(db, article.getCategorie()));
         values.put(COLONNE_IMAGE, idCategorie(db, article.getImage()));
         db.insert(TABLE_ARTICLE, null, values);
+    }
+
+    public void modifierArticle(SQLiteDatabase db, Article article, int id){
+        String strFilter = "_id=" + id;
+        ContentValues values = new ContentValues();
+        values.put(COLONNE_NOM, article.getNomArticle());
+        values.put(COLONNE_SAISON, article.getSaison());
+        values.put(COLONNE_TYPE, idType(db, article.getType()) );
+        values.put(COLONNE_COULEUR, idCouleur(db, article.getCouleur()));
+        values.put(COLONNE_CATEGORIE, idCategorie(db, article.getCategorie()));
+        values.put(COLONNE_DATE, article.getDernierDatePortee());
+        db.update(TABLE_ARTICLE,values, strFilter, null);
+    }
+
+    public void ajouterUtilisateur (SQLiteDatabase db, Utilisateur utilisateur) {
+        ContentValues values = new ContentValues();
+        values.put(COLONNE_NOM, utilisateur.getNom());
+        values.put(COLONNE_PRENOM, utilisateur.getPrenom());
+        values.put(COLONNE_PASSWORD, utilisateur.getPassword() );
+        values.put(COLONNE_COULEUR,utilisateur.getAdresseCouriel());
+        db.insert(TABLE_UTILISATEUR, null, values);
+    }
+
+    public void ajouterEnsemble (SQLiteDatabase db, Cursor article ) {
+        maxEnsemble++;
+        ContentValues values = new ContentValues();
+        for (int a = 0 ;a< article.getCount();a++){
+            values.put(COLONNE_NUMERO_ENSEMBLE, maxEnsemble);
+            values.put(COLONNE_NUMERO_ARTICLE, article.getInt(article.getColumnIndexOrThrow(COLONNE_NUMERO_ARTICLE)));
+            db.insert(TABLE_ENSEMBLE, null, values);
+        }
+    }
+
+    public void supprimerEnsemble (SQLiteDatabase db, int ensemble ) {
+        db.delete(TABLE_ENSEMBLE, COLONNE_NUMERO_ENSEMBLE + "=" + ensemble, null);
+    }
+
+    public Cursor listerEnsemble (SQLiteDatabase db) {
+        String sql = "SELECT "
+                + TABLE_ARTICLE + "." + COLONNE_NOM + ", "
+                + TABLE_ARTICLE + "." + COLONNE_SAISON + ", "
+                + TABLE_TYPE + "." + COLONNE_TYPE + ", "
+                + TABLE_COULEUR + "." + TABLE_COULEUR + ", "
+                + TABLE_CATEGORIE + "." + COLONNE_CATEGORIE
+                + TABLE_ENSEMBLE +  "." + COLONNE_NUMERO_ENSEMBLE
+                + " FROM " + TABLE_ARTICLE + ", " + TABLE_ENSEMBLE
+                + " WHERE " + TABLE_ARTICLE + "." + COLONNE_ID + " = " + TABLE_ENSEMBLE+ "." + COLONNE_NUMERO_ARTICLE;
+        Cursor cursor = db.rawQuery(sql, null);
+        return cursor ;
+    }
+
+    public void ajouterAuPanier(SQLiteDatabase db , int id ) {
+        ContentValues values = new ContentValues();
+        values.put(COLONNE_NUMERO_ARTICLE, id );
+        db.insert(TABLE_CART, null, values);
+    }
+
+    public void retirerDuPanier (SQLiteDatabase db, String id) {
+        db.delete(TABLE_CART, COLONNE_ID + " = ?", new String[]{ id });
+    }
+
+    public Cursor listerCart (SQLiteDatabase db) {
+        String sql = "SELECT "
+                        + TABLE_ARTICLE + "." + COLONNE_NOM + ", "
+                        + TABLE_ARTICLE + "." + COLONNE_SAISON + ", "
+                        + TABLE_TYPE + "." + COLONNE_TYPE + ", "
+                        + TABLE_COULEUR + "." + TABLE_COULEUR + ", "
+                        + TABLE_CATEGORIE + "." + COLONNE_CATEGORIE
+                        + " FROM " + TABLE_ARTICLE + ", " + TABLE_CART
+                        + " WHERE " + TABLE_ARTICLE + "." + COLONNE_ID + " = " + TABLE_CART+ "." + COLONNE_NUMERO_ARTICLE;
+        Cursor cursor = db.rawQuery(sql, null);
+        return cursor ;
+    }
+
+    //Verifier
+    public Utilisateur Verifier(SQLiteDatabase db,Utilisateur utilisateur) {
+        Cursor cursor = db.rawQuery(SELECT_ALL + " AND " + TABLE_UTILISATEUR + "." + COLONNE_ADRESSE+ " = ?",
+                new String[]{ utilisateur.getAdresseCouriel() });
+        if (cursor != null && cursor.moveToFirst()&& cursor.getCount()>0) {
+            Utilisateur utilisateur11 = new Utilisateur(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3));
+            if (utilisateur.getPassword().equalsIgnoreCase(utilisateur11.getPassword()))
+                return utilisateur11;
+        }
+        return null;
     }
 
     // gestion des types, couleurs, catégories //
@@ -169,42 +265,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLONNE_CATEGORIE, categorie);
         db.insert(TABLE_CATEGORIE, null, values);
     }
-    public void ajouterUtilisateur (SQLiteDatabase db, Utilisateur utilisateur) {
-        ContentValues values = new ContentValues();
-        values.put(COLONNE_DESCRIPTION, utilisateur.getNom());
-        values.put(COLONNE_PRENOM, utilisateur.getPrenom());
-        values.put(COLONNE_PASSWORD, utilisateur.getPassword() );
-        values.put(COLONNE_COULEUR,utilisateur.getAdresseCouriel());
-        db.insert(TABLE_UTILISATEUR, null, values);
-    }
 
-
-    //modifier
-    public void modifierArticle(SQLiteDatabase db, Article article, int id){
-        String strFilter = "_id=" + id;
-        ContentValues values = new ContentValues();
-        values.put(COLONNE_DESCRIPTION, article.getNomArticle());
-        values.put(COLONNE_SAISON, article.getSaison());
-        values.put(COLONNE_TYPE, idType(db, article.getType()) );
-        values.put(COLONNE_COULEUR, idCouleur(db, article.getCouleur()));
-        values.put(COLONNE_CATEGORIE, idCategorie(db, article.getCategorie()));
-        values.put(COLONNE_DATE, article.getDernierDatePortee());
-        db.update(TABLE_ARTICLE,values, strFilter, null);
-    }
-
-    //Verifier
-    public Utilisateur Verifier(SQLiteDatabase db,Utilisateur utilisateur) {
-        Cursor cursor = db.rawQuery(SELECT_ALL + " AND " + TABLE_UTILISATEUR + "." + COLONNE_ADRESSE+ " = ?",
-                new String[]{ utilisateur.getAdresseCouriel() });
-        if (cursor != null && cursor.moveToFirst()&& cursor.getCount()>0) {
-            Utilisateur utilisateur11 = new Utilisateur(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3));
-            if (utilisateur.getPassword().equalsIgnoreCase(utilisateur11.getPassword()))
-                return utilisateur11;
-        }
-        return null;
-    }
-
-    // lister les types, couleurs, catégories //
     public ArrayList<String> tousLesTypes (SQLiteDatabase db) {
         ArrayList<String> liste = new ArrayList<String>();
         Cursor cursor = db.rawQuery("SELECT " + COLONNE_TYPE + " FROM " + TABLE_TYPE, null);
@@ -362,13 +423,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /// À IMPLÉMENTER!!!!!!!!!!!!!!!!!!!!!!!!
     // AJOUTER LES NOUVELLES MÉTHODES ICI AVANT DE FINALISER
-    public void retirerDuPanier (SQLiteDatabase db, String id) {
-
-    }
-
-    public void ajouterDuPanier (SQLiteDatabase db, String id) {
-
-    }
 
     // TODO: remplacer les utilisations par des appels à tousLesTypes, toutesLesCouleurs ou toutesLesCategories
     public List<String> listerValeursDistinctes(String nomtable) {
